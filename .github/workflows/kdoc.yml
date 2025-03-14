@@ -1,8 +1,9 @@
-name: Build KDoc
+name: CI
 
 on:
+  workflow_dispatch:
   push:
-    branches: [master]
+    branches: [ 'main' ]
 
 jobs:
   dokka:
