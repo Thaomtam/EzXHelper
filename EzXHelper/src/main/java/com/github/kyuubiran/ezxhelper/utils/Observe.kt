@@ -1,7 +1,7 @@
 package com.github.kyuubiran.ezxhelper.utils
 
 /**
- * 监听一个对象，当值发生变化时调用 onValueChanged 中所有回调
+ * Theo dõi một đối tượng, khi giá trị thay đổi sẽ gọi tất cả các callback trong onValueChanged
  */
 class Observe<T>(init: T, onValueChanged: ((T) -> Unit)? = null) {
     private var _value: T = init

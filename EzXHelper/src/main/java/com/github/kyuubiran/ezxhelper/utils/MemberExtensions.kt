@@ -6,7 +6,7 @@ import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 
 /**
- * 扩展属性 判断是否为Static
+ * Thuộc tính mở rộng để kiểm tra có phải là Static không
  */
 val Member.isStatic: Boolean
     inline get() = Modifier.isStatic(this.modifiers)
@@ -19,7 +19,7 @@ val Class<*>.isNotStatic: Boolean
     inline get() = !this.isStatic
 
 /**
- * 扩展属性 判断是否为Public
+ * Thuộc tính mở rộng để kiểm tra có phải là Public không
  */
 val Member.isPublic: Boolean
     inline get() = Modifier.isPublic(this.modifiers)
@@ -32,7 +32,7 @@ val Class<*>.isNotPublic: Boolean
     inline get() = !this.isPublic
 
 /**
- * 扩展属性 判断是否为Protected
+ * Thuộc tính mở rộng để kiểm tra có phải là Protected không
  */
 val Member.isProtected: Boolean
     inline get() = Modifier.isProtected(this.modifiers)
@@ -45,7 +45,7 @@ val Class<*>.isNotProtected: Boolean
     inline get() = !this.isProtected
 
 /**
- * 扩展属性 判断是否为Private
+ * Thuộc tính mở rộng để kiểm tra có phải là Private không
  */
 val Member.isPrivate: Boolean
     inline get() = Modifier.isPrivate(this.modifiers)
@@ -58,7 +58,7 @@ val Class<*>.isNotPrivate: Boolean
     inline get() = !this.isPrivate
 
 /**
- * 扩展属性 判断是否为Final
+ * Thuộc tính mở rộng để kiểm tra có phải là Final không
  */
 val Member.isFinal: Boolean
     inline get() = Modifier.isFinal(this.modifiers)
@@ -71,7 +71,7 @@ val Class<*>.isNotFinal: Boolean
     inline get() = !this.isFinal
 
 /**
- * 扩展属性 判断是否为Native
+ * Thuộc tính mở rộng để kiểm tra có phải là Native không
  */
 val Member.isNative: Boolean
     inline get() = Modifier.isNative(this.modifiers)
@@ -79,7 +79,7 @@ val Member.isNotNative: Boolean
     inline get() = !this.isNative
 
 /**
- * 扩展属性 判断是否为Synchronized
+ * Thuộc tính mở rộng để kiểm tra có phải là Synchronized không
  */
 val Member.isSynchronized: Boolean
     inline get() = Modifier.isSynchronized(this.modifiers)
@@ -87,7 +87,7 @@ val Member.isNotSynchronized: Boolean
     inline get() = !this.isSynchronized
 
 /**
- * 扩展属性 判断是否为Abstract
+ * Thuộc tính mở rộng để kiểm tra có phải là Abstract không
  */
 val Member.isAbstract: Boolean
     inline get() = Modifier.isAbstract(this.modifiers)
@@ -100,7 +100,7 @@ val Class<*>.isNotAbstract: Boolean
     inline get() = !this.isAbstract
 
 /**
- * 扩展属性 判断是否为Transient
+ * Thuộc tính mở rộng để kiểm tra có phải là Transient không
  */
 val Member.isTransient: Boolean
     inline get() = Modifier.isTransient(this.modifiers)
@@ -108,7 +108,7 @@ val Member.isNotTransient: Boolean
     inline get() = !this.isTransient
 
 /**
- * 扩展属性 判断是否为Volatile
+ * Thuộc tính mở rộng để kiểm tra có phải là Volatile không
  */
 val Member.isVolatile: Boolean
     inline get() = Modifier.isVolatile(this.modifiers)
@@ -116,19 +116,19 @@ val Member.isNotVolatile: Boolean
     inline get() = !this.isVolatile
 
 /**
- * 扩展属性 获取方法的参数数量
+ * Thuộc tính mở rộng để lấy số lượng tham số của phương thức
  */
 val Method.paramCount: Int
     inline get() = this.parameterTypes.size
 
 /**
- * 扩展属性 获取构造方法的参数数量
+ * Thuộc tính mở rộng để lấy số lượng tham số của constructor
  */
 val Constructor<*>.paramCount: Int
     inline get() = this.parameterTypes.size
 
 /**
- * 扩展属性 判断方法的参数是否为空
+ * Thuộc tính mở rộng để kiểm tra phương thức có tham số không
  */
 val Method.emptyParam: Boolean
     inline get() = this.paramCount == 0
@@ -136,7 +136,7 @@ val Method.notEmptyParam: Boolean
     inline get() = this.paramCount != 0
 
 /**
- * 扩展属性 判断构造方法的参数是否为空
+ * Thuộc tính mở rộng để kiểm tra constructor có tham số không
  */
 val Constructor<*>.emptyParam: Boolean
     inline get() = this.paramCount == 0

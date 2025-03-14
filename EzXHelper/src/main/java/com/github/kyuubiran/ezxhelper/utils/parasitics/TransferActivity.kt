@@ -4,9 +4,9 @@ import android.app.Activity
 import android.os.Bundle
 
 /**
- * 所有需要在宿主内启动模块的Activity都必须继承于TransferActivity
+ * Tất cả các Activity cần khởi chạy trong ứng dụng chủ đều phải kế thừa từ TransferActivity
  *
- * 或者 你可以继承自己的Activity 并将按照下面的方式重写这两个函数
+ * Hoặc bạn có thể kế thừa từ Activity của riêng mình và ghi đè hai hàm này theo cách dưới đây
  */
 open class TransferActivity : Activity() {
     override fun getClassLoader(): ClassLoader {

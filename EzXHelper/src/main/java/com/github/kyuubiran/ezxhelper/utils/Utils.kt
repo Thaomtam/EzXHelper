@@ -6,9 +6,9 @@ import java.util.*
 import kotlin.system.exitProcess
 
 /**
- * 尝试执行一块代码，如果成功返true，失败则返回false
- * @param block 执行的代码块
- * @return 成功为true，失败为false
+ * Thử thực thi một khối mã, nếu thành công trả về true, thất bại trả về false
+ * @param block Khối mã cần thực thi
+ * @return true nếu thành công, false nếu thất bại
  */
 inline fun tryOrFalse(block: () -> Unit): Boolean = try {
     block()
@@ -18,8 +18,8 @@ inline fun tryOrFalse(block: () -> Unit): Boolean = try {
 }
 
 /**
- * 尝试执行一块代码，如果失败则记录日志
- * @param block 执行的代码块
+ * Thử thực thi một khối mã, nếu thất bại thì ghi log
+ * @param block Khối mã cần thực thi
  */
 inline fun tryOrLog(block: () -> Unit) = try {
     block()
@@ -28,9 +28,9 @@ inline fun tryOrLog(block: () -> Unit) = try {
 }
 
 /**
- * 尝试执行一块代码，如果成功返true，失败则返回false并且记录日志
- * @param block 执行的代码块
- * @return 成功为true，失败为false
+ * Thử thực thi một khối mã, nếu thành công trả về true, thất bại trả về false và ghi log
+ * @param block Khối mã cần thực thi
+ * @return true nếu thành công, false nếu thất bại
  */
 inline fun tryOrLogFalse(block: () -> Unit): Boolean = try {
     block()
@@ -41,9 +41,9 @@ inline fun tryOrLogFalse(block: () -> Unit): Boolean = try {
 }
 
 /**
- * 尝试执行一块代码，如果成功返回代码块执行的结果，失败则返回null
- * @param block 执行的代码块
- * @return 成功返回代码块执行的返回值，失败返回null
+ * Thử thực thi một khối mã, nếu thành công trả về kết quả của khối mã, thất bại trả về null
+ * @param block Khối mã cần thực thi
+ * @return Giá trị trả về của khối mã nếu thành công, null nếu thất bại
  */
 inline fun <T> tryOrNull(block: () -> T?): T? = try {
     block()
@@ -52,9 +52,9 @@ inline fun <T> tryOrNull(block: () -> T?): T? = try {
 }
 
 /**
- * 尝试执行一块代码，如果成功返回代码块执行的结果，失败则返回null并且记录日志
- * @param block 执行的代码块
- * @return 成功返回代码块执行的返回值，失败返回null
+ * Thử thực thi một khối mã, nếu thành công trả về kết quả của khối mã, thất bại trả về null và ghi log
+ * @param block Khối mã cần thực thi
+ * @return Giá trị trả về của khối mã nếu thành công, null nếu thất bại
  */
 inline fun <T> tryOrLogNull(block: () -> T?): T? = try {
     block()
@@ -64,17 +64,17 @@ inline fun <T> tryOrLogNull(block: () -> T?): T? = try {
 }
 
 /**
- * 扩展函数 保留可变列表中符合条件的元素
- * @param predicate 条件
+ * Hàm mở rộng để giữ lại các phần tử trong danh sách có thể thay đổi thỏa mãn điều kiện
+ * @param predicate Điều kiện
  */
 inline fun <E> MutableList<E>.retainIf(predicate: ((E) -> Boolean)) {
     this.filter { elem -> predicate(elem) }.forEach { this.remove(it) }
 }
 
 /**
- * 扩展函数 保留可变列表中符合条件的元素 并返回可变列表
- * @param predicate 条件
- * @return 保留符合条件的元素之后的可变列表
+ * Hàm mở rộng để giữ lại các phần tử trong danh sách có thể thay đổi thỏa mãn điều kiện và trả về danh sách đó
+ * @param predicate Điều kiện
+ * @return Danh sách có thể thay đổi sau khi giữ lại các phần tử thỏa mãn điều kiện
  */
 inline fun <E> MutableList<E>.applyRetainIf(predicate: (E) -> Boolean): MutableList<E> {
     this.retainIf(predicate)
@@ -82,17 +82,17 @@ inline fun <E> MutableList<E>.applyRetainIf(predicate: (E) -> Boolean): MutableL
 }
 
 /**
- * 扩展函数 保留可变集合中符合条件的元素
- * @param predicate 条件
+ * Hàm mở rộng để giữ lại các phần tử trong tập hợp có thể thay đổi thỏa mãn điều kiện
+ * @param predicate Điều kiện
  */
 inline fun <E> MutableSet<E>.retainIf(predicate: (E) -> Boolean) {
     this.filter { elem -> predicate(elem) }.forEach { this.remove(it) }
 }
 
 /**
- * 扩展函数 保留可变集合中符合条件的元素 并返回可变集合
- * @param predicate 条件
- * @return 保留符合条件的元素之后的可变集合
+ * Hàm mở rộng để giữ lại các phần tử trong tập hợp có thể thay đổi thỏa mãn điều kiện và trả về tập hợp đó
+ * @param predicate Điều kiện
+ * @return Tập hợp có thể thay đổi sau khi giữ lại các phần tử thỏa mãn điều kiện
  */
 inline fun <E> MutableSet<E>.applyRetainIf(predicate: (E) -> Boolean): MutableSet<E> {
     this.retainIf(predicate)
@@ -100,17 +100,17 @@ inline fun <E> MutableSet<E>.applyRetainIf(predicate: (E) -> Boolean): MutableSe
 }
 
 /**
- * 扩展函数 保留可变字典中符合条件的元素
- * @param predicate 条件
+ * Hàm mở rộng để giữ lại các phần tử trong từ điển có thể thay đổi thỏa mãn điều kiện
+ * @param predicate Điều kiện
  */
 inline fun <K, V> MutableMap<K, V>.retainIf(predicate: (K, V) -> Boolean) {
     this.filter { (key, value) -> predicate(key, value) }.forEach { this.remove(it.key) }
 }
 
 /**
- * 扩展函数 保留可变字典中符合条件的元素 并返回可变字典
- * @param predicate 条件
- * @return 保留符合条件的元素之后的可变字典
+ * Hàm mở rộng để giữ lại các phần tử trong từ điển có thể thay đổi thỏa mãn điều kiện và trả về từ điển đó
+ * @param predicate Điều kiện
+ * @return Từ điển có thể thay đổi sau khi giữ lại các phần tử thỏa mãn điều kiện
  */
 inline fun <K, V> MutableMap<K, V>.applyRetainIf(predicate: (K, V) -> Boolean): MutableMap<K, V> {
     this.retainIf(predicate)
@@ -118,17 +118,17 @@ inline fun <K, V> MutableMap<K, V>.applyRetainIf(predicate: (K, V) -> Boolean): 
 }
 
 /**
- * 扩展函数 移除可变字典中符合条件的元素
- * @param predicate 条件
+ * Hàm mở rộng để xóa các phần tử trong từ điển có thể thay đổi thỏa mãn điều kiện
+ * @param predicate Điều kiện
  */
 inline fun <K, V> MutableMap<K, V>.removeIf(predicate: (K, V) -> Boolean) {
     this.filter { (key, value) -> predicate(key, value) }.forEach { this.remove(it.key) }
 }
 
 /**
- * 扩展函数 移除可变字典中符合条件的元素 并返回可变字典
- * @param predicate 条件
- * @return 移除符合条件的元素之后的可变字典
+ * Hàm mở rộng để xóa các phần tử trong từ điển có thể thay đổi thỏa mãn điều kiện và trả về từ điển đó
+ * @param predicate Điều kiện
+ * @return Từ điển có thể thay đổi sau khi xóa các phần tử thỏa mãn điều kiện
  */
 inline fun <K, V> MutableMap<K, V>.applyRemoveIf(
     predicate: (K, V) -> Boolean
@@ -138,8 +138,8 @@ inline fun <K, V> MutableMap<K, V>.applyRemoveIf(
 }
 
 /**
- * 取自 哔哩漫游
- * 查找DexClassLoader
+ * Lấy từ BiliRoaming
+ * Tìm DexClassLoader
  * @see `https://github.com/yujincheng08/BiliRoaming`
  */
 inline fun ClassLoader.findDexClassLoader(crossinline delegator: (BaseDexClassLoader) -> BaseDexClassLoader = { x -> x }): BaseDexClassLoader? {
@@ -152,8 +152,8 @@ inline fun ClassLoader.findDexClassLoader(crossinline delegator: (BaseDexClassLo
 }
 
 /**
- * 取自 哔哩漫游
- * 获取所有类名
+ * Lấy từ BiliRoaming
+ * Lấy tất cả tên lớp
  * @see `https://github.com/yujincheng08/BiliRoaming`
  */
 fun ClassLoader.getAllClassesList(delegator: (BaseDexClassLoader) -> BaseDexClassLoader = { loader -> loader }): List<String> =
@@ -165,7 +165,7 @@ fun ClassLoader.getAllClassesList(delegator: (BaseDexClassLoader) -> BaseDexClas
         }.orEmpty()
 
 /**
- * 重新启动宿主App
+ * Khởi động lại ứng dụng chủ
  */
 fun restartHostApp(activity: Activity) {
     val pm = activity.packageManager
@@ -176,16 +176,16 @@ fun restartHostApp(activity: Activity) {
 }
 
 /**
- * 扩展函数 判断类是否相同(用于判断参数)
+ * Hàm mở rộng để kiểm tra xem các lớp có giống nhau không (dùng để kiểm tra tham số)
  *
- * eg: fun foo(a: Boolean, b: Int) { }
+ * Ví dụ: fun foo(a: Boolean, b: Int) { }
  * foo.parameterTypes.sameAs(*array)
  * foo.parameterTypes.sameAs(Boolean::class.java, Int::class.java)
  * foo.parameterTypes.sameAs("boolean", "int")
  * foo.parameterTypes.sameAs(Boolean::class.java, "int")
  *
- * @param other 其他类(支持String或者Class<*>)
- * @return 是否相等
+ * @param other Các lớp khác (hỗ trợ String hoặc Class<*>)
+ * @return có giống nhau không
  */
 fun Array<Class<*>>.sameAs(vararg other: Any): Boolean {
     if (this.size != other.size) return false

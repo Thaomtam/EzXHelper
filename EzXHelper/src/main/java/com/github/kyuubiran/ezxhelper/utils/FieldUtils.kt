@@ -7,11 +7,11 @@ import java.lang.reflect.Method
 typealias FieldCondition = Field.() -> Boolean
 
 /**
- * 通过条件查找类中的属性
- * @param clz 类
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的属性
+ * Tìm thuộc tính trong lớp theo điều kiện
+ * @param clz Lớp
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Thuộc tính thỏa mãn điều kiện
  * @throws NoSuchFieldException
  */
 fun findField(
@@ -23,11 +23,11 @@ fun findField(
 }
 
 /**
- * 通过条件查找类中的属性
- * @param clz 类
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的属性 未找到时返回null
+ * Tìm thuộc tính trong lớp theo điều kiện
+ * @param clz Lớp
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Thuộc tính thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 fun findFieldOrNull(
     clz: Class<*>,

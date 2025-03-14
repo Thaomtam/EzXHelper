@@ -4,12 +4,12 @@ import com.github.kyuubiran.ezxhelper.init.InitFields
 import de.robv.android.xposed.XposedHelpers
 
 /**
- * 通过模块加载类
- * @param clzName 类名
- * @param clzLoader 类加载器
- * @return 被加载的类
- * @throws IllegalArgumentException 类名为空
- * @throws ClassNotFoundException 未找到类
+ * Tải lớp thông qua module
+ * @param clzName Tên lớp
+ * @param clzLoader ClassLoader
+ * @return Lớp đã được tải
+ * @throws IllegalArgumentException Tên lớp rỗng
+ * @throws ClassNotFoundException Không tìm thấy lớp
  */
 fun loadClass(clzName: String, clzLoader: ClassLoader = InitFields.ezXClassLoader): Class<*> {
     if (clzName.isBlank()) throw IllegalArgumentException("Class name must not be null or empty!")
@@ -17,10 +17,10 @@ fun loadClass(clzName: String, clzLoader: ClassLoader = InitFields.ezXClassLoade
 }
 
 /**
- * 尝试加载列表中的一个类
- * @param clzName 类名
- * @param clzLoader 类加载器
- * @return 第一个成功被加载的类
+ * Thử tải một lớp từ danh sách
+ * @param clzName Tên lớp
+ * @param clzLoader ClassLoader
+ * @return Lớp đầu tiên được tải thành công
  */
 fun loadClassAny(
     vararg clzName: String,
@@ -29,10 +29,10 @@ fun loadClassAny(
     ?: throw ClassNotFoundException()
 
 /**
- * 尝试加载列表中的一个类 失败则返回null
- * @param clzName 类名
- * @param clzLoader 类加载器
- * @return 第一个成功被加载的类或者null
+ * Thử tải một lớp từ danh sách, trả về null nếu thất bại
+ * @param clzName Tên lớp
+ * @param clzLoader ClassLoader
+ * @return Lớp đầu tiên được tải thành công hoặc null
  */
 fun loadClassAnyOrNull(
     vararg clzName: String,
@@ -40,10 +40,10 @@ fun loadClassAnyOrNull(
 ): Class<*>? = clzName.firstNotNullOfOrNull { loadClassOrNull(it, clzLoader) }
 
 /**
- * 尝试加载一个类 如果失败则返回null
- * @param clzName 类名
- * @param clzLoader 类加载器
- * @return 被加载的类
+ * Thử tải một lớp, trả về null nếu thất bại
+ * @param clzName Tên lớp
+ * @param clzLoader ClassLoader
+ * @return Lớp đã được tải
  */
 fun loadClassOrNull(
     clzName: String,
@@ -54,9 +54,9 @@ fun loadClassOrNull(
 }
 
 /**
- * 扩展函数 加载数组中的所有类
- * @param clzLoader 类加载器
- * @return 类数组
+ * Hàm mở rộng để tải tất cả các lớp trong mảng
+ * @param clzLoader ClassLoader
+ * @return Mảng các lớp
  */
 fun Array<String>.loadAllClasses(clzLoader: ClassLoader = InitFields.ezXClassLoader): Array<Class<*>> {
     return Array(this.size) { i -> loadClass(this[i], clzLoader) }
@@ -67,9 +67,9 @@ fun Iterable<String>.loadAllClasses(clzLoader: ClassLoader = InitFields.ezXClass
 }
 
 /**
- * 扩展函数 尝试加载数组中的所有类
- * @param clzLoader 类加载器
- * @return 加载成功的类数组
+ * Hàm mở rộng để thử tải tất cả các lớp trong mảng
+ * @param clzLoader ClassLoader
+ * @return Mảng các lớp đã tải thành công
  */
 fun Array<String>.loadClassesIfExists(clzLoader: ClassLoader = InitFields.ezXClassLoader): Array<Class<*>> {
     return this.mapNotNull { loadClassOrNull(it, clzLoader) }.toTypedArray()
@@ -80,9 +80,9 @@ fun Iterable<String>.loadClassesIfExists(clzLoader: ClassLoader = InitFields.ezX
 }
 
 /**
- * 尝试加载数组中的一个类
- * @param clzLoader 类加载器
- * @return 第一个成功被加载的类
+ * Thử tải một lớp từ mảng
+ * @param clzLoader ClassLoader
+ * @return Lớp đầu tiên được tải thành công
  */
 @JvmName("loadClassAnyFromArray")
 fun Array<String>.loadClassAny(clzLoader: ClassLoader = InitFields.ezXClassLoader): Class<*> =
@@ -92,9 +92,9 @@ fun Iterable<String>.loadClassAny(clzLoader: ClassLoader = InitFields.ezXClassLo
     this.firstNotNullOfOrNull { loadClassOrNull(it, clzLoader) } ?: throw ClassNotFoundException()
 
 /**
- * 尝试加载数组中的一个类 失败则返回null
- * @param clzLoader 类加载器
- * @return 第一个成功被加载的类或者null
+ * Thử tải một lớp từ mảng, trả về null nếu thất bại
+ * @param clzLoader ClassLoader
+ * @return Lớp đầu tiên được tải thành công hoặc null
  */
 @JvmName("loadClassAnyOrFromList")
 fun Array<String>.loadClassAnyOrNull(clzLoader: ClassLoader = InitFields.ezXClassLoader): Class<*>? =
@@ -104,10 +104,10 @@ fun Iterable<String>.loadClassAnyOrNull(clzLoader: ClassLoader = InitFields.ezXC
     this.firstNotNullOfOrNull { loadClassOrNull(it, clzLoader) }
 
 /**
- * 扩展函数 判断自身是否为某个类的子类
- * @param clzName 类名
- * @param clzLoader 类加载器
- * @return 是否为子类
+ * Hàm mở rộng để kiểm tra xem lớp hiện tại có phải là lớp con của một lớp khác không
+ * @param clzName Tên lớp
+ * @param clzLoader ClassLoader
+ * @return Có phải là lớp con không
  */
 fun Class<*>.isChildClassOf(clzName: String, clzLoader: ClassLoader = InitFields.ezXClassLoader): Boolean =
     loadClass(clzName, clzLoader).isAssignableFrom(this)

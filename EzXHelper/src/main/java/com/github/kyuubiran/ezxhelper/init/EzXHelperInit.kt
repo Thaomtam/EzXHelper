@@ -19,8 +19,8 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage
 
 object EzXHelperInit {
     /**
-     * 使用本库必须执行的初始化
-     * 应在handleLoadPackage方法内第一个调用
+     * Khởi tạo bắt buộc khi sử dụng thư viện này
+     * Nên được gọi đầu tiên trong phương thức handleLoadPackage
      * @see IXposedHookLoadPackage.handleLoadPackage
      * @see XC_LoadPackage.LoadPackageParam
      */
@@ -30,7 +30,7 @@ object EzXHelperInit {
     }
 
     /**
-     * 初始化Zygote 以便使用模块路径 和 模块资源
+     * Khởi tạo Zygote để sử dụng đường dẫn module và tài nguyên module
      * @see IXposedHookZygoteInit.initZygote
      */
     fun initZygote(startupParam: IXposedHookZygoteInit.StartupParam) {
@@ -39,29 +39,29 @@ object EzXHelperInit {
     }
 
     /**
-     * 设置本库使用的类加载器
+     * Thiết lập class loader được sử dụng bởi thư viện này
      *
-     * 注意：通常情况下 建议使用框架提供的类加载器进行操作
+     * Lưu ý: Thông thường, nên sử dụng class loader được cung cấp bởi framework
      *
-     * 但某些app会修改自身的类加载器 遇到这种情况请自行设置运行时的类加载器
-     * @param classLoader 类加载器
+     * Nhưng một số ứng dụng sẽ sửa đổi class loader của chúng, trong trường hợp này, vui lòng tự thiết lập class loader thời gian chạy
+     * @param classLoader Class loader
      */
     fun setEzClassLoader(classLoader: ClassLoader) {
         ezXClassLoader = classLoader
     }
 
     /**
-     * 设置宿主包名
+     * Thiết lập tên gói của ứng dụng chủ
      */
     fun setHostPackageName(packageName: String) {
         hostPackageName = packageName
     }
 
     /**
-     * 初始化全局ApplicationContext
+     * Khởi tạo ApplicationContext toàn cục
      * @param context ctx
-     * @param addPath 是否往ctx中添加模块资源路径
-     * @param initModuleResources 是否初始化moduleRes
+     * @param addPath có thêm đường dẫn tài nguyên module vào ctx không
+     * @param initModuleResources có khởi tạo moduleRes không
      */
     fun initAppContext(
         context: Context = AndroidAppHelper.currentApplication(),
@@ -75,7 +75,7 @@ object EzXHelperInit {
 
 
     /**
-     * 设置自定义的 Logger,与 setLogXp setLogTag setToastTag 冲突！
+     * Thiết lập Logger tùy chỉnh, xung đột với setLogXp setLogTag setToastTag!
      */
     fun setLogger(log: Logger) {
         Log.currentLogger = log
@@ -83,22 +83,22 @@ object EzXHelperInit {
 
 
     /**
-     * 设置是否输出日志到 Xposed
+     * Thiết lập có xuất log ra Xposed không
      */
     fun setLogXp(toXp: Boolean) {
         Log.currentLogger.logXp = toXp
     }
 
     /**
-     * 设置打印日志的标签
+     * Thiết lập tag cho log
      */
     fun setLogTag(tag: String) {
         Log.currentLogger.logTag = tag
     }
 
     /**
-     * 设置Log.toast的Tag
-     * 如果不设置会使用日志TAG
+     * Thiết lập Tag cho Log.toast
+     * Nếu không thiết lập sẽ sử dụng TAG của log
      * @see Log.toast
      */
     fun setToastTag(tag: String) {
@@ -106,11 +106,11 @@ object EzXHelperInit {
     }
 
     /**
-     * 将模块的资源路径添加到Context.resources内 允许直接以R.xx.xxx获取资源
+     * Thêm đường dẫn tài nguyên của module vào Context.resources, cho phép truy cập trực tiếp tài nguyên thông qua R.xx.xxx
      *
-     * 要求:
+     * Yêu cầu:
      *
-     * 1.在项目的build.gradle中修改资源id(不与宿主冲突即可) 如下:
+     * 1. Sửa đổi ID tài nguyên trong build.gradle của dự án (miễn là không xung đột với ứng dụng chủ) như sau:
      *
      * Kotlin Gradle DSL:
      * androidResources.additionalParameters("--allow-reserved-package-id", "--package-id", "0x64")
@@ -118,11 +118,11 @@ object EzXHelperInit {
      * Groovy:
      * aaptOptions.additionalParameters '--allow-reserved-package-id', '--package-id', '0x64'
      *
-     * 2.执行过EzXHelperInit.initZygote
+     * 2. Đã thực thi EzXHelperInit.initZygote
      *
-     * 3.在使用资源前调用
+     * 3. Gọi trước khi sử dụng tài nguyên
      *
-     * eg:在Activity中:
+     * Ví dụ: Trong Activity:
      * init { addModuleAssetPath(this) }
      *
      * @see initZygote
@@ -141,13 +141,13 @@ object EzXHelperInit {
     }
 
     /**
-     * 初始化启动未注册Activity所需的各类内容
-     * 需要在initSubActivity之前调用 且不能过早调用
+     * Khởi tạo các thành phần cần thiết để khởi chạy Activity chưa đăng ký
+     * Cần được gọi trước initSubActivity và không nên gọi quá sớm
      *
-     * @param modulePackageName 模块包名
-     * @param hostActivityProxyName 代理的宿主的Activity名
-     * @param moduleClassLoader 模块的类加载器
-     * @param hostClassLoader 宿主的类加载器
+     * @param modulePackageName Tên gói của module
+     * @param hostActivityProxyName Tên Activity proxy của ứng dụng chủ
+     * @param moduleClassLoader Class loader của module
+     * @param hostClassLoader Class loader của ứng dụng chủ
      * @see initSubActivity
      * @see ActivityProxyManager
      * @see TransferActivity
@@ -167,17 +167,17 @@ object EzXHelperInit {
     }
 
     /**
-     * 初始化启动未注册的Activity
+     * Khởi tạo để khởi chạy Activity chưa đăng ký
      *
-     * 需要先调用initActivityProxyManager
+     * Cần gọi initActivityProxyManager trước
      * @see initActivityProxyManager
      *
-     * 需要使用addModuleAssetPath 所以必须调用initZygote
+     * Cần sử dụng addModuleAssetPath nên phải gọi initZygote
      * @see initZygote
      * @see addModuleAssetPath
      *
-     * 需要在Application.onCreate之后调用 且只需要调用一次
-     * 并且模块所有的Activity需要继承于TransferActivity
+     * Cần được gọi sau Application.onCreate và chỉ cần gọi một lần
+     * Và tất cả Activity của module cần kế thừa từ TransferActivity
      */
     fun initSubActivity() {
         ActivityHelper.initSubActivity()

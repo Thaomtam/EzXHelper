@@ -16,7 +16,7 @@ val runtimeProcess: Runtime by lazy {
 }
 
 /**
- * 扩展函数 将函数放到主线程执行 如UI更新、显示Toast等
+ * Hàm mở rộng để thực thi hàm trên luồng chính, như cập nhật UI, hiển thị Toast, v.v.
  */
 fun Runnable.postOnMainThread() {
     if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -31,26 +31,26 @@ fun runOnMainThread(runnable: Runnable) {
 }
 
 /**
- * 扩展函数 显示一个Toast
- * @param msg Toast显示的消息
- * @param length Toast显示的时长
+ * Hàm mở rộng để hiển thị một Toast
+ * @param msg Thông báo hiển thị trong Toast
+ * @param length Thời gian hiển thị của Toast
  */
 fun Context.showToast(msg: String, length: Int = Toast.LENGTH_SHORT) = runOnMainThread {
     Toast.makeText(this, msg, length).show()
 }
 
 /**
- * 扩展函数 显示一个Toast
- * @param msg Toast显示的消息
- * @param args 格式化的参数
- * @param length Toast显示的时长
+ * Hàm mở rộng để hiển thị một Toast
+ * @param msg Thông báo hiển thị trong Toast
+ * @param args Các tham số định dạng
+ * @param length Thời gian hiển thị của Toast
  */
 fun Context.showToast(msg: String, vararg args: Any?, length: Int = Toast.LENGTH_SHORT) = runOnMainThread {
     Toast.makeText(this, msg.format(args), length).show()
 }
 
 /**
- * 扩展函数 将模块的资源路径添加到Context.resources内 允许直接以R.xx.xxx获取资源
+ * Hàm mở rộng để thêm đường dẫn tài nguyên của module vào Context.resources, cho phép truy cập trực tiếp tài nguyên thông qua R.xx.xxx
  * @see EzXHelperInit.addModuleAssetPath
  */
 fun Context.addModuleAssetPath() {
@@ -58,7 +58,7 @@ fun Context.addModuleAssetPath() {
 }
 
 /**
- * 扩展函数 将模块的资源路径添加到resources内 允许直接以R.xx.xxx获取资源
+ * Hàm mở rộng để thêm đường dẫn tài nguyên của module vào resources, cho phép truy cập trực tiếp tài nguyên thông qua R.xx.xxx
  * @see EzXHelperInit.addModuleAssetPath
  */
 fun Resources.addModuleAssetPath() {

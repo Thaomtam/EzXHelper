@@ -19,14 +19,14 @@ inline fun args(vararg args: Any?) = Args(args)
 inline fun argTypes(vararg argTypes: Class<*>) = ArgTypes(argTypes)
 
 /**
- * 扩展函数 通过类或者对象获取单个方法
- * @param methodName 方法名
- * @param isStatic 是否为静态方法
- * @param returnType 方法返回值 填入null为无视返回值
- * @param argTypes 方法参数类型
- * @return 符合条件的方法
- * @throws IllegalArgumentException 方法名为空
- * @throws NoSuchMethodException 未找到方法
+ * Hàm mở rộng để lấy một phương thức từ lớp hoặc đối tượng
+ * @param methodName Tên phương thức
+ * @param isStatic Có phải là phương thức tĩnh không
+ * @param returnType Kiểu trả về của phương thức, điền null để bỏ qua kiểu trả về
+ * @param argTypes Kiểu tham số của phương thức
+ * @return Phương thức thỏa mãn điều kiện
+ * @throws IllegalArgumentException Tên phương thức rỗng
+ * @throws NoSuchMethodException Không tìm thấy phương thức
  */
 fun Any.method(
     methodName: String,
@@ -49,11 +49,11 @@ fun Any.method(
 }
 
 /**
- * 扩展函数 通过类获取单个静态方法
- * @param methodName 方法名
- * @param returnType 方法返回值 填入null为无视返回值
- * @param argTypes 方法参数类型
- * @throws IllegalArgumentException 方法名为空
+ * Hàm mở rộng để lấy một phương thức tĩnh từ lớp
+ * @param methodName Tên phương thức
+ * @param returnType Kiểu trả về của phương thức, điền null để bỏ qua kiểu trả về
+ * @param argTypes Kiểu tham số của phương thức
+ * @throws IllegalArgumentException Tên phương thức rỗng
  */
 fun Class<*>.staticMethod(
     methodName: String,
@@ -67,11 +67,11 @@ fun Class<*>.staticMethod(
 typealias MethodCondition = Method.() -> Boolean
 
 /**
- * 通过条件查找类中的方法
- * @param clz 类
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的方法
+ * Tìm phương thức trong lớp theo điều kiện
+ * @param clz Lớp
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Phương thức thỏa mãn điều kiện
  * @throws NoSuchMethodException
  */
 fun findMethod(
@@ -83,11 +83,11 @@ fun findMethod(
 }
 
 /**
- * 通过条件查找类中的方法
- * @param clz 类
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的方法 未找到时返回null
+ * Tìm phương thức trong lớp theo điều kiện
+ * @param clz Lớp
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Phương thức thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 fun findMethodOrNull(
     clz: Class<*>,
@@ -109,13 +109,13 @@ fun findMethodOrNull(
 }
 
 /**
- * 通过条件查找方法
- * @param clzName 类名
- * @param classLoader 类加载器
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的方法
- * @throws NoSuchMethodException 未找到方法
+ * Tìm phương thức theo điều kiện
+ * @param clzName Tên lớp
+ * @param classLoader ClassLoader
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Phương thức thỏa mãn điều kiện
+ * @throws NoSuchMethodException Không tìm thấy phương thức
  */
 fun findMethod(
     clzName: String,
@@ -127,27 +127,10 @@ fun findMethod(
 }
 
 /**
- * 通过条件查找类中的方法
- * @param clzName 类名
- * @param classLoader 类加载器
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的方法 未找到时返回null
- */
-fun findMethodOrNull(
-    clzName: String,
-    classLoader: ClassLoader = InitFields.ezXClassLoader,
-    findSuper: Boolean = false,
-    condition: MethodCondition
-): Method? {
-    return findMethodOrNull(loadClass(clzName, classLoader), findSuper, condition)
-}
-
-/**
- *  扩展函数 通过条件查找方法
- *  @param condition 方法的条件
- *  @return 符合条件的方法
- *  @throws NoSuchMethodException 未找到方法
+ * Hàm mở rộng để tìm phương thức theo điều kiện
+ * @param condition Điều kiện của phương thức
+ * @return Phương thức thỏa mãn điều kiện
+ * @throws NoSuchMethodException Không tìm thấy phương thức
  */
 fun Array<Method>.findMethod(condition: MethodCondition): Method {
     return this.firstOrNull { it.condition() }?.apply { isAccessible = true }
@@ -160,9 +143,9 @@ fun Iterable<Method>.findMethod(condition: MethodCondition): Method {
 }
 
 /**
- *  扩展函数 通过条件查找方法
- *  @param condition 方法的条件
- *  @return 符合条件的方法 未找到时返回null
+ * Hàm mở rộng để tìm phương thức theo điều kiện
+ * @param condition Điều kiện của phương thức
+ * @return Phương thức thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 fun Array<Method>.findMethodOrNull(condition: MethodCondition): Method? {
     return this.firstOrNull { it.condition() }?.apply { isAccessible = true }
@@ -173,10 +156,10 @@ fun Iterable<Method>.findMethodOrNull(condition: MethodCondition): Method? {
 }
 
 /**
- * 扩展函数 通过条件查找方法 每个类只搜索一个方法
- * @param findSuper 是否查找父类
- * @param condition 方法条件
- * @return 方法数组
+ * Hàm mở rộng để tìm phương thức theo điều kiện, mỗi lớp chỉ tìm một phương thức
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện của phương thức
+ * @return Mảng phương thức
  */
 fun Array<Class<*>>.findMethods(
     findSuper: Boolean = false,
@@ -189,11 +172,11 @@ fun Iterable<Class<*>>.findMethods(
 ): List<Method> = mapNotNull { it.findMethodOrNull(findSuper, condition) }
 
 /**
- * 扩展函数 加载数组中的类并且通过条件查找方法 每个类只搜索一个方法
- * @param classLoader 类加载器
- * @param findSuper 是否查找父类
- * @param condition 方法条件
- * @return 方法数组
+ * Hàm mở rộng để tải các lớp trong mảng và tìm phương thức theo điều kiện, mỗi lớp chỉ tìm một phương thức
+ * @param classLoader ClassLoader
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện của phương thức
+ * @return Mảng phương thức
  */
 fun Array<String>.loadAndFindMethods(
     classLoader: ClassLoader = InitFields.ezXClassLoader,
@@ -216,9 +199,9 @@ infix fun String.mcp(condition: MethodCondition) = this to condition
 infix fun Class<*>.mcp(condition: MethodCondition) = this to condition
 
 /**
- * 扩展函数 通过条件查找数组中对应的方法 每个类只搜索一个方法
- * @param findSuper 是否查找父类
- * @return 方法数组
+ * Hàm mở rộng để tìm phương thức tương ứng trong mảng theo điều kiện, mỗi lớp chỉ tìm một phương thức
+ * @param findSuper Có tìm trong lớp cha không
+ * @return Mảng phương thức
  */
 fun Array<Pair<Class<*>, MethodCondition>>.findMethods(
     findSuper: Boolean = false
@@ -226,37 +209,11 @@ fun Array<Pair<Class<*>, MethodCondition>>.findMethods(
     return this.map { (k, v) -> findMethod(k, findSuper, v) }.toTypedArray()
 }
 
-fun Iterable<Pair<Class<*>, MethodCondition>>.findMethods(
-    findSuper: Boolean = false
-): List<Method> {
-    return this.map { (k, v) -> findMethod(k, findSuper, v) }
-}
-
 /**
- * 扩展函数 加载数组中的类并且通过条件查找方法 每个类只搜索一个方法
- * @param classLoader 类加载器
- * @param findSuper 是否查找父类
- * @return 方法数组
- */
-fun Array<Pair<String, MethodCondition>>.loadAndFindMethods(
-    classLoader: ClassLoader = InitFields.ezXClassLoader,
-    findSuper: Boolean = false
-): Array<Method> {
-    return this.map { (k, v) -> findMethod(loadClass(k, classLoader), findSuper, v) }.toTypedArray()
-}
-
-fun Iterable<Pair<String, MethodCondition>>.loadAndFindMethods(
-    classLoader: ClassLoader = InitFields.ezXClassLoader,
-    findSuper: Boolean = false
-): List<Method> {
-    return this.map { (k, v) -> findMethod(loadClass(k, classLoader), findSuper, v) }
-}
-
-/**
- * 扩展函数 通过条件搜索所有方法
- * @param findSuper 是否查找父类
- * @param condition 方法条件
- * @return 方法数组
+ * Hàm mở rộng để tìm tất cả phương thức theo điều kiện
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện của phương thức
+ * @return Mảng phương thức
  */
 fun Array<Class<*>>.findAllMethods(
     findSuper: Boolean = false,
@@ -273,9 +230,9 @@ fun Iterable<Class<*>>.findAllMethods(
 }
 
 /**
- * 扩展函数 加载数组中的类并且通过条件查找方法
- * @param findSuper 是否查找父类
- * @return 方法数组
+ * Hàm mở rộng để tìm tất cả phương thức trong mảng theo điều kiện
+ * @param findSuper Có tìm trong lớp cha không
+ * @return Mảng phương thức
  */
 fun Array<Pair<Class<*>, MethodCondition>>.findAllMethods(
     findSuper: Boolean = false
@@ -293,10 +250,10 @@ fun Iterable<Pair<Class<*>, MethodCondition>>.findAllMethods(
 }
 
 /**
- * 扩展函数 加载数组中的类并且通过条件查找方法
- * @param classLoader 类加载器
- * @param findSuper 是否查找父类
- * @return 方法数组
+ * Hàm mở rộng để tải các lớp trong mảng và tìm tất cả phương thức theo điều kiện
+ * @param classLoader ClassLoader
+ * @param findSuper Có tìm trong lớp cha không
+ * @return Mảng phương thức
  */
 fun Array<Pair<String, MethodCondition>>.loadAndFindAllMethods(
     classLoader: ClassLoader = InitFields.ezXClassLoader,
@@ -314,11 +271,11 @@ fun Iterable<Pair<String, MethodCondition>>.loadAndFindAllMethods(
 }
 
 /**
- * 扩展函数 加载数组中的类并且通过条件查找所有方法
- * @param classLoader 类加载器
- * @param findSuper 是否查找父类
- * @param condition 方法条件
- * @return 方法数组
+ * Hàm mở rộng để tìm tất cả phương thức theo điều kiện
+ * @param classLoader ClassLoader
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện của phương thức
+ * @return Mảng phương thức
  */
 fun Array<String>.loadAndFindAllMethods(
     classLoader: ClassLoader = InitFields.ezXClassLoader,

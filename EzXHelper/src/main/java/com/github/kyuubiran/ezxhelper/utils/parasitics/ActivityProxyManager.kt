@@ -2,27 +2,27 @@ package com.github.kyuubiran.ezxhelper.utils.parasitics
 
 object ActivityProxyManager {
     /**
-     * 用于区分宿主和模块intent
+     * Dùng để phân biệt intent của ứng dụng chủ và module
      */
     lateinit var ACTIVITY_PROXY_INTENT: String
 
     /**
-     * 模块的包名 可以使用BuildConfig.APPLICATION_ID获取
+     * Tên gói của module, có thể sử dụng BuildConfig.APPLICATION_ID để lấy
      */
     lateinit var MODULE_PACKAGE_NAME_ID: String
 
     /**
-     * 代理宿主的Activity类名
+     * Tên Activity proxy của ứng dụng chủ
      */
     lateinit var HOST_ACTIVITY_PROXY_NAME: String
 
     /**
-     * 模块类加载器 可以使用模块类名.javaclass.classLoader获取
+     * Class loader của module, có thể sử dụng TênLớpModule.javaclass.classLoader để lấy
      */
     lateinit var MODULE_CLASS_LOADER: ClassLoader
 
     /**
-     * 宿主类加载器 可以使用AndroidAppHelper.currentApplication().classLoader获取
+     * Class loader của ứng dụng chủ, có thể sử dụng AndroidAppHelper.currentApplication().classLoader để lấy
      */
     lateinit var HOST_CLASS_LOADER: ClassLoader
 }

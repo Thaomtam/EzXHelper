@@ -1,0 +1,1 @@
+Tôi cần chuyển tất cả ngôn ngữ có trong tài liệu từ tiếng trung sang tiếng việt trong dự án này. Mục đích để dễ dàng cho người dùng đọc và sử dụng. Xin cảm ơn

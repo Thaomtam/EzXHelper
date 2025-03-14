@@ -13,7 +13,7 @@ typealias Hooker = (param: XC_MethodHook.MethodHookParam) -> Unit
 typealias ReplaceHooker = (param: XC_MethodHook.MethodHookParam) -> Any?
 
 /**
- * 扩展函数 hook方法/构造
+ * Hàm mở rộng để hook phương thức/constructor
  * @param hookCallback [XC_MethodHook]
  * @return unhook [XC_MethodHook.Unhook]
  */
@@ -40,9 +40,9 @@ inline fun replaceHooker(crossinline hookCallback: ReplaceHooker):
 
 
 /**
- * 扩展函数 hook方法执行前
- * @param priority 优先级 默认50
- * @param hook [Hooker] hook具体实现
+ * Hàm mở rộng để hook trước khi phương thức thực thi
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hook [Hooker] Triển khai cụ thể của hook
  * @return unhook [XC_MethodHook.Unhook]
  */
 fun Method.hookBefore(
@@ -64,9 +64,9 @@ fun Method.hookBefore(hooker: Hooker) = this.hookBefore(
 )
 
 /**
- * 扩展函数 hook多个方法执行前
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
+ * Hàm mở rộng để hook trước khi nhiều phương thức thực thi
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hooker [Hooker] Triển khai cụ thể của hook
  * @return unhooks Array<[XC_MethodHook.Unhook]>
  */
 fun Array<Method>.hookBefore(
@@ -94,9 +94,9 @@ fun Iterable<Method>.hookBefore(hooker: Hooker) = this.hookBefore(
 )
 
 /**
- * 扩展函数 hook构造执行前
- * @param priority 优先级 默认50
- * @param hook [Hooker] hook具体实现
+ * Hàm mở rộng để hook trước khi constructor thực thi
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hook [Hooker] Triển khai cụ thể của hook
  * @return unhook [XC_MethodHook.Unhook]
  */
 fun Constructor<*>.hookBefore(
@@ -118,9 +118,9 @@ fun Constructor<*>.hookBefore(hooker: Hooker) = this.hookBefore(
 )
 
 /**
- * 扩展函数 hook多个构造执行前
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
+ * Hàm mở rộng để hook trước khi nhiều constructor thực thi
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hooker [Hooker] Triển khai cụ thể của hook
  * @return unhooks Array<[XC_MethodHook.Unhook]>
  */
 fun Array<Constructor<*>>.hookBefore(
@@ -150,9 +150,9 @@ fun Iterable<Constructor<*>>.hookBefore(hooker: Hooker) = this.hookBefore(
 )
 
 /**
- * 扩展函数 hook方法执行后
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
+ * Hàm mở rộng để hook sau khi phương thức thực thi
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hooker [Hooker] Triển khai cụ thể của hook
  * @return unhook [XC_MethodHook.Unhook]
  */
 fun Method.hookAfter(
@@ -174,9 +174,9 @@ fun Method.hookAfter(hooker: Hooker) = this.hookAfter(
 )
 
 /**
- * 扩展函数 hook多个方法执行后
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
+ * Hàm mở rộng để hook sau khi nhiều phương thức thực thi
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hooker [Hooker] Triển khai cụ thể của hook
  * @return unhooks Array<[XC_MethodHook.Unhook]>
  */
 fun Array<Method>.hookAfter(
@@ -204,9 +204,9 @@ fun Iterable<Method>.hookAfter(hooker: Hooker) = this.hookAfter(
 )
 
 /**
- * 扩展函数 hook构造执行后
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
+ * Hàm mở rộng để hook sau khi constructor thực thi
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hooker [Hooker] Triển khai cụ thể của hook
  * @return unhook [XC_MethodHook.Unhook]
  */
 fun Constructor<*>.hookAfter(
@@ -228,9 +228,9 @@ fun Constructor<*>.hookAfter(hooker: Hooker) = this.hookAfter(
 )
 
 /**
- * 扩展函数 hook多个构造执行后
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
+ * Hàm mở rộng để hook sau khi nhiều constructor thực thi
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hooker [Hooker] Triển khai cụ thể của hook
  * @return unhooks Array<[XC_MethodHook.Unhook]>
  */
 fun Array<Constructor<*>>.hookAfter(
@@ -260,226 +260,9 @@ fun Iterable<Constructor<*>>.hookAfter(hooker: Hooker) = this.hookAfter(
 )
 
 /**
- * 扩展函数 替换方法
- * @param priority 优先级 默认50
- * @param hook [Hooker] hook具体实现
- * @return unhook [XC_MethodHook.Unhook]
- */
-fun Method.hookReplace(
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hook: ReplaceHooker
-): XC_MethodHook.Unhook {
-    return this.hookMethod(object : XC_MethodReplacement(priority) {
-        override fun replaceHookedMethod(param: MethodHookParam): Any? = try {
-            hook(param)
-        } catch (thr: Throwable) {
-            Log.ex(thr)
-        }
-    })
-}
-
-fun Method.hookReplace(hooker: ReplaceHooker) = this.hookReplace(
-    XCallback.PRIORITY_DEFAULT,
-    hooker
-)
-
-/**
- * 扩展函数 替换多个方法
- *
- * 注意: 会忽略hooker的返回值
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
- * @return unhooks Array<[XC_MethodHook.Unhook]>
- */
-fun Array<Method>.hookReplace(
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: ReplaceHooker
-): Array<XC_MethodHook.Unhook> {
-    return this.map { it.hookReplace(priority, hooker) }.toTypedArray()
-}
-
-fun Array<Method>.hookReplace(hooker: ReplaceHooker) = this.hookReplace(
-    XCallback.PRIORITY_DEFAULT,
-    hooker
-)
-
-fun Iterable<Method>.hookReplace(
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: ReplaceHooker
-): List<XC_MethodHook.Unhook> {
-    return this.map { it.hookReplace(priority, hooker) }
-}
-
-fun Iterable<Method>.hookReplace(hooker: ReplaceHooker) = this.hookReplace(
-    XCallback.PRIORITY_DEFAULT,
-    hooker
-)
-
-/**
- * 扩展函数 替换构造
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
- * @return unhook [XC_MethodHook.Unhook]
- */
-fun Constructor<*>.hookReplace(
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: ReplaceHooker
-): XC_MethodHook.Unhook {
-    return this.hookMethod(object : XC_MethodReplacement(priority) {
-        override fun replaceHookedMethod(param: MethodHookParam): Any? = try {
-            hooker(param)
-        } catch (thr: Throwable) {
-            Log.ex(thr)
-        }
-    })
-}
-
-fun Constructor<*>.hookReplace(hooker: ReplaceHooker) = this.hookReplace(
-    XCallback.PRIORITY_DEFAULT,
-    hooker
-)
-
-/**
- * 扩展函数 替换多个构造
- *
- * 注意: 会忽略hooker的返回值
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
- * @return unhooks Array<[XC_MethodHook.Unhook]>
- */
-fun Array<Constructor<*>>.hookReplace(
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: ReplaceHooker
-): Array<XC_MethodHook.Unhook> {
-    return this.map { it.hookReplace(priority, hooker) }.toTypedArray()
-}
-
-fun Array<Constructor<*>>.hookReplace(hooker: ReplaceHooker) = this.hookReplace(
-    XCallback.PRIORITY_DEFAULT,
-    hooker
-)
-
-@JvmName("hookConstructorReplace")
-fun Iterable<Constructor<*>>.hookReplace(
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: ReplaceHooker
-): List<XC_MethodHook.Unhook> {
-    return this.map { it.hookReplace(priority, hooker) }
-}
-
-@JvmName("hookConstructorReplace")
-fun Iterable<Constructor<*>>.hookReplace(hooker: ReplaceHooker) = this.hookReplace(
-    XCallback.PRIORITY_DEFAULT,
-    hooker
-)
-
-
-/**
- * 扩展函数 hook类的所有构造前
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
- * @return unhooks Array<[XC_MethodHook.Unhook]>
- */
-fun Class<*>.hookAllConstructorBefore(
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: Hooker
-): Array<XC_MethodHook.Unhook> {
-    return this.declaredConstructors.hookBefore(priority, hooker)
-}
-
-fun Class<*>.hookAllConstructorBefore(hooker: Hooker) = this.hookAllConstructorBefore(
-    XCallback.PRIORITY_DEFAULT,
-    hooker
-)
-
-/**
- * 扩展函数 hook类的所有构造后
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
- * @return unhooks Array<[XC_MethodHook.Unhook]>
- */
-fun Class<*>.hookAllConstructorAfter(
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: Hooker
-): Array<XC_MethodHook.Unhook> {
-    return this.declaredConstructors.hookAfter(priority, hooker)
-}
-
-fun Class<*>.hookAllConstructorAfter(hooker: Hooker) = this.hookAllConstructorAfter(
-    XCallback.PRIORITY_DEFAULT,
-    hooker
-)
-
-/**
- * 扩展函数 替换类的所有构造
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
- * @return unhooks Array<[XC_MethodHook.Unhook]>
- */
-fun Class<*>.hookAllConstructorReplace(
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: ReplaceHooker
-): Array<XC_MethodHook.Unhook> {
-    return this.declaredConstructors.hookReplace(priority, hooker)
-}
-
-fun Class<*>.hookAllConstructorReplace(hooker: ReplaceHooker) = this.hookAllConstructorReplace(
-    XCallback.PRIORITY_DEFAULT,
-    hooker
-)
-
-/**
- * hook类的所有构造前
- * @param clzName 类名
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
- * @return unhooks Array<[XC_MethodHook.Unhook]>
- */
-fun hookAllConstructorBefore(
-    clzName: String,
-    clzLoader: ClassLoader = InitFields.ezXClassLoader,
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: Hooker
-): Array<XC_MethodHook.Unhook> {
-    return loadClass(clzName, clzLoader).declaredConstructors.hookBefore(priority, hooker)
-}
-
-/**
- * hook类的所有构造后
- * @param clzName 类名
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
- * @return unhooks Array<[XC_MethodHook.Unhook]>
- */
-fun hookAllConstructorAfter(
-    clzName: String,
-    clzLoader: ClassLoader = InitFields.ezXClassLoader,
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: Hooker
-): Array<XC_MethodHook.Unhook> {
-    return loadClass(clzName, clzLoader).declaredConstructors.hookAfter(priority, hooker)
-}
-
-/**
- * 替换类的所有构造
- * @param clzName 类名
- * @param priority 优先级 默认50
- * @param hooker [Hooker] hook具体实现
- * @return unhooks Array<[XC_MethodHook.Unhook]>
- */
-fun hookAllConstructorReplace(
-    clzName: String,
-    clzLoader: ClassLoader = InitFields.ezXClassLoader,
-    priority: Int = XCallback.PRIORITY_DEFAULT,
-    hooker: Hooker
-): Array<XC_MethodHook.Unhook> {
-    return loadClass(clzName, clzLoader).declaredConstructors.hookReplace(priority, hooker)
-}
-
-/**
- * 扩展函数 hook方法 使其直接返回一个值
- * @param priority 优先级 默认50
- * @param obj 要返回的值
+ * Hàm mở rộng để hook phương thức 
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param obj Giá trị trả về
  * @return unhook [XC_MethodHook.Unhook]
  */
 fun Method.hookReturnConstant(priority: Int = XCallback.PRIORITY_DEFAULT, obj: Any?): Unhook =
@@ -488,9 +271,9 @@ fun Method.hookReturnConstant(priority: Int = XCallback.PRIORITY_DEFAULT, obj: A
 fun Method.hookReturnConstant(obj: Any?) = this.hookReturnConstant(XCallback.PRIORITY_DEFAULT, obj)
 
 /**
- * 扩展函数 hook方法数组中的所有方法 使其直接返回一个值
- * @param priority 优先级 默认50
- * @param obj 要返回的值
+ * Hàm mở rộng để hook phương thức trong mảng 
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param obj Giá trị trả về
  * @return unhooks Array<[XC_MethodHook.Unhook]>
  */
 fun Array<Method>.hookReturnConstant(
@@ -513,9 +296,9 @@ fun List<Method>.hookReturnConstant(obj: Any?) =
     this.hookReturnConstant(XCallback.PRIORITY_DEFAULT, obj)
 
 /**
- * 扩展函数 hook构造 使其直接返回一个值
- * @param priority 优先级 默认50
- * @param obj 要返回的值
+ * Hàm mở rộng để hook constructor 
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param obj Giá trị trả về
  * @return unhook [XC_MethodHook.Unhook]
  */
 fun Constructor<*>.hookReturnConstant(
@@ -549,7 +332,7 @@ fun List<Constructor<*>>.hookReturnConstant(obj: Any?) =
     this.hookReturnConstant(XCallback.PRIORITY_DEFAULT, obj)
 
 /**
- * Hook工厂类
+ * Lớp factory cho Hook
  */
 class XposedHookFactory(priority: Int = XCallback.PRIORITY_DEFAULT) : XC_MethodHook(priority) {
     private var beforeMethod: Hooker? = null
@@ -564,14 +347,14 @@ class XposedHookFactory(priority: Int = XCallback.PRIORITY_DEFAULT) : XC_MethodH
     }
 
     /**
-     * hook方法执行前
+     * Hook trước khi phương thức thực thi
      */
     fun before(before: Hooker) {
         this.beforeMethod = before
     }
 
     /**
-     * hook方法执行后
+     * Hook sau khi phương thức thực thi
      */
     fun after(after: Hooker) {
         this.afterMethod = after
@@ -579,16 +362,16 @@ class XposedHookFactory(priority: Int = XCallback.PRIORITY_DEFAULT) : XC_MethodH
 }
 
 /**
- * 扩展函数 hook方法
- * 直接以
+ * Hàm mở rộng để hook phương thức
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hook Hàm hook
  *
+ * Sử dụng dưới dạng:
  * before { }
  *
  * after { }
  *
- * 的形式进行hook 两者均为可选
- * @param priority 优先级 默认50
- * @param hook 传递的XposedHookFactory
+ * Cả hai đều là tùy chọn
  * @return Unhook
  * @see XposedHookFactory
  */
@@ -602,16 +385,16 @@ fun Method.hookMethod(
 }
 
 /**
- * 扩展函数 hook构造
- * 直接以
+ * Hàm mở rộng để hook constructor
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hook Hàm hook
  *
+ * Sử dụng dưới dạng:
  * before { }
  *
  * after { }
  *
- * 的形式进行hook 两者均为可选
- * @param priority 优先级 默认50
- * @param hook 传递的XposedHookFactory
+ * Cả hai đều là tùy chọn
  * @return Unhook
  * @see XposedHookFactory
  */
@@ -625,16 +408,16 @@ fun Constructor<*>.hookMethod(
 }
 
 /**
- * 扩展函数 hook多个方法
- * 直接以
+ * Hàm mở rộng để hook nhiều phương thức
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hook Hàm hook
  *
+ * Sử dụng dưới dạng:
  * before { }
  *
  * after { }
  *
- * 的形式进行hook 两者均为可选
- * @param priority 优先级 默认50
- * @param hook 传递的XposedHookFactory
+ * Cả hai đều là tùy chọn
  * @return Array<Unhook>
  * @see XposedHookFactory
  */
@@ -653,16 +436,16 @@ fun Iterable<Method>.hookMethod(
 }
 
 /**
- * 扩展函数 hook多个构造
- * 直接以
+ * Hàm mở rộng để hook nhiều constructor
+ * @param priority Độ ưu tiên, mặc định là 50
+ * @param hooker Hàm hook
  *
+ * Sử dụng dưới dạng:
  * before { }
  *
  * after { }
  *
- * 的形式进行hook 两者均为可选
- * @param priority 优先级 默认50
- * @param hooker 传递的XposedHookFactory
+ * Cả hai đều là tùy chọn
  * @return Array<Unhook>
  * @see XposedHookFactory
  */
@@ -682,7 +465,7 @@ fun Iterable<Constructor<*>>.hookMethod(
 }
 
 /**
- * 执行数组中所有的unhook
+ * Thực thi tất cả các unhook
  */
 fun Array<XC_MethodHook.Unhook>.unhookAll() {
     this.forEach { it.unhook() }

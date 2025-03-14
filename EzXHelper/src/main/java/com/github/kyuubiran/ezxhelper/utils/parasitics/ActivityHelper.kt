@@ -470,7 +470,7 @@ class MyHandler(private val mDefault: Handler.Callback?) : Handler.Callback {
                     val record = msg.obj
                     val fIntent = record::class.java.field("intent")
                     val intent = fIntent.get(record)!! as Intent
-                    //获取bundle
+                    //Lấy bundle
                     var bundle: Bundle? = null
                     try {
                         val fExtras = Intent::class.java.field("mExtras")
@@ -478,7 +478,7 @@ class MyHandler(private val mDefault: Handler.Callback?) : Handler.Callback {
                     } catch (e: Exception) {
                         Log.e(e)
                     }
-                    //设置
+                    //Thiết lập
                     bundle?.let {
                         it.classLoader = appContext.classLoader
                         if (intent.hasExtra(ActivityProxyManager.ACTIVITY_PROXY_INTENT)) {
@@ -493,7 +493,7 @@ class MyHandler(private val mDefault: Handler.Callback?) : Handler.Callback {
                 val clientTranslation = msg.obj
                 runCatching {
                     clientTranslation?.let { cTrans ->
-                        //获取列表
+                        //Lấy danh sách
                         val mGetCallbacks =
                             Class.forName("android.app.servertransaction.ClientTransaction")
                                 .method("getCallbacks")
@@ -504,7 +504,7 @@ class MyHandler(private val mDefault: Handler.Callback?) : Handler.Callback {
                                 if (clz?.name?.contains("LaunchActivityItem") == true) {
                                     val fmIntent = clz.field("mIntent")
                                     val wrapper = fmIntent.get(item) as Intent
-                                    //获取Bundle
+                                    //Lấy Bundle
                                     var bundle: Bundle? = null
                                     try {
                                         val fExtras = Intent::class.java.field("mExtras")
@@ -512,7 +512,7 @@ class MyHandler(private val mDefault: Handler.Callback?) : Handler.Callback {
                                     } catch (e: Exception) {
                                         Log.e(e)
                                     }
-                                    //设置
+                                    //Thiết lập
                                     bundle?.let { b ->
                                         b.classLoader = ActivityProxyManager.HOST_CLASS_LOADER
                                         if (wrapper.hasExtra(ActivityProxyManager.ACTIVITY_PROXY_INTENT)) {

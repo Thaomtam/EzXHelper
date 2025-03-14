@@ -7,19 +7,19 @@ import de.robv.android.xposed.XposedBridge
 
 open class Logger {
     /**
-     * 日志等级 低于等级的日志不会被打印出来
-     * 可以配合BuildConfig.DEBUG / RELEASE来使用
+     * Cấp độ log, các log có cấp độ thấp hơn sẽ không được in ra
+     * Có thể sử dụng kết hợp với BuildConfig.DEBUG / RELEASE
      */
     var logLevel: Int = VERBOSE
 
     /**
-     * 日志Tag
+     * Tag của log
      */
     var logTag: String = "EZXHelper"
 
 
     /**
-     * 是否输出日志到 Xposed
+     * Có xuất log ra Xposed không
      */
     var logXp: Boolean = true
         internal set
@@ -38,9 +38,9 @@ open class Logger {
     }
 
     /**
-     * 打印日志 等级: Info
-     * @param msg 消息
-     * @param thr 异常
+     * In log với cấp độ: Info
+     * @param msg Thông báo
+     * @param thr Ngoại lệ
      */
     open fun i(msg: String, thr: Throwable? = null) {
         if (logLevel > INFO) return
@@ -48,9 +48,9 @@ open class Logger {
     }
 
     /**
-     * 打印日志 等级: Debug
-     * @param msg 消息
-     * @param thr 异常
+     * In log với cấp độ: Debug
+     * @param msg Thông báo
+     * @param thr Ngoại lệ
      */
     open fun d(msg: String, thr: Throwable? = null) {
         if (logLevel > DEBUG) return
@@ -59,9 +59,9 @@ open class Logger {
 
 
     /**
-     * 打印日志 等级: Warn
-     * @param msg 消息
-     * @param thr 异常
+     * In log với cấp độ: Warn
+     * @param msg Thông báo
+     * @param thr Ngoại lệ
      */
     open fun w(msg: String, thr: Throwable? = null) {
         if (logLevel > WARN) return
@@ -70,9 +70,9 @@ open class Logger {
 
 
     /**
-     * 打印日志 等级: Error
-     * @param msg 消息
-     * @param thr 异常
+     * In log với cấp độ: Error
+     * @param msg Thông báo
+     * @param thr Ngoại lệ
      */
     open fun e(msg: String, thr: Throwable? = null) {
         if (logLevel > ERROR) return
@@ -81,10 +81,10 @@ open class Logger {
 
 
     /**
-     * 打印日志到Xposed
-     * @param level 等级
-     * @param msg 消息
-     * @param thr 异常
+     * In log ra Xposed
+     * @param level Cấp độ
+     * @param msg Thông báo
+     * @param thr Ngoại lệ
      */
     open fun px(levelInt: Int, level: String, msg: String, thr: Throwable?) {
         if (logLevel > levelInt) return
@@ -93,36 +93,36 @@ open class Logger {
 
 
     /**
-     * 打印日志 等级: Info
-     * @param thr 异常
-     * @param msg 消息
+     * In log với cấp độ: Info
+     * @param thr Ngoại lệ
+     * @param msg Thông báo
      */
     fun i(thr: Throwable, msg: String = "") {
         i(msg, thr)
     }
 
     /**
-     * 打印日志 等级: Debug
-     * @param thr 异常
-     * @param msg 消息
+     * In log với cấp độ: Debug
+     * @param thr Ngoại lệ
+     * @param msg Thông báo
      */
     fun d(thr: Throwable, msg: String = "") {
         d(msg, thr)
     }
 
     /**
-     * 打印日志 等级: Warn
-     * @param thr 异常
-     * @param msg 消息
+     * In log với cấp độ: Warn
+     * @param thr Ngoại lệ
+     * @param msg Thông báo
      */
     fun w(thr: Throwable, msg: String = "") {
         w(msg, thr)
     }
 
     /**
-     * 打印日志 等级: Error
-     * @param thr 异常
-     * @param msg 消息
+     * In log với cấp độ: Error
+     * @param thr Ngoại lệ
+     * @param msg Thông báo
      */
     fun e(thr: Throwable, msg: String = "") {
         e(msg, thr)
@@ -130,9 +130,9 @@ open class Logger {
 
 
     /**
-     * 打印日志到Xposed 等级: Info
-     * @param msg 消息
-     * @param thr 异常
+     * In log ra Xposed với cấp độ: Info
+     * @param msg Thông báo
+     * @param thr Ngoại lệ
      */
     fun ix(msg: String, thr: Throwable? = null) {
         i(msg, thr)
@@ -141,9 +141,9 @@ open class Logger {
 
 
     /**
-     * 打印日志到Xposed 等级: Info
-     * @param thr 异常
-     * @param msg 消息
+     * In log ra Xposed với cấp độ: Info
+     * @param thr Ngoại lệ
+     * @param msg Thông báo
      */
     fun ix(thr: Throwable, msg: String = "") {
         ix(msg, thr)
@@ -151,9 +151,9 @@ open class Logger {
 
 
     /**
-     * 打印日志到Xposed 等级: Warn
-     * @param msg 消息
-     * @param thr 异常
+     * In log ra Xposed với cấp độ: Warn
+     * @param msg Thông báo
+     * @param thr Ngoại lệ
      */
     fun wx(msg: String, thr: Throwable? = null) {
         w(msg, thr)
@@ -162,9 +162,9 @@ open class Logger {
 
 
     /**
-     * 打印日志到Xposed 等级: Warn
-     * @param thr 异常
-     * @param msg 消息
+     * In log ra Xposed với cấp độ: Warn
+     * @param thr Ngoại lệ
+     * @param msg Thông báo
      */
     fun wx(thr: Throwable, msg: String = "") {
         wx(msg, thr)
@@ -172,9 +172,9 @@ open class Logger {
 
 
     /**
-     * 打印日志到Xposed 等级: Debug
-     * @param msg 消息
-     * @param thr 异常
+     * In log ra Xposed với cấp độ: Debug
+     * @param msg Thông báo
+     * @param thr Ngoại lệ
      */
     fun dx(msg: String, thr: Throwable? = null) {
         d(msg, thr)
@@ -183,9 +183,9 @@ open class Logger {
 
 
     /**
-     * 打印日志到Xposed 等级: Debug
-     * @param thr 异常
-     * @param msg 消息
+     * In log ra Xposed với cấp độ: Debug
+     * @param thr Ngoại lệ
+     * @param msg Thông báo
      */
     fun dx(thr: Throwable, msg: String = "") {
         dx(msg, thr)
@@ -193,9 +193,9 @@ open class Logger {
 
 
     /**
-     * 打印日志到Xposed 等级: Error
-     * @param msg 消息
-     * @param thr 异常
+     * In log ra Xposed với cấp độ: Error
+     * @param msg Thông báo
+     * @param thr Ngoại lệ
      */
     fun ex(msg: String, thr: Throwable? = null) {
         e(msg, thr)
@@ -204,9 +204,9 @@ open class Logger {
 
 
     /**
-     * 打印日志到Xposed 等级: Error
-     * @param thr 异常
-     * @param msg 消息
+     * In log ra Xposed với cấp độ: Error
+     * @param thr Ngoại lệ
+     * @param msg Thông báo
      */
     fun ex(thr: Throwable, msg: String = "") {
         ex(msg, thr)
@@ -224,7 +224,7 @@ object Log {
         }
 
     /**
-     * 如果显示Toast时上一个Toast还没消失，设置是否取消上一个Toast，并显示本次Toast
+     * Khi hiển thị Toast, nếu Toast trước đó chưa biến mất, có hủy Toast trước đó và hiển thị Toast mới không
      */
     var cancelLastToast: Boolean = false
 
@@ -295,12 +295,12 @@ object Log {
     }
 
     /**
-     * 显示一个Toast
+     * Hiển thị một Toast
      *
-     * 需要先初始化appContext才能使用
+     * Cần khởi tạo appContext trước khi sử dụng
      *
-     * 如果不设置TOAST_TAG
-     * 则不显示前缀
+     * Nếu không thiết lập TOAST_TAG
+     * thì sẽ không hiển thị tiền tố
      * @see setToastTag
      */
     fun toast(msg: String, duration: Int = Toast.LENGTH_SHORT) = runOnMainThread {
@@ -316,10 +316,10 @@ object Log {
         toast(msg.format(*formats), duration)
 
     /**
-     * 扩展函数 配合runCatching使用
-     * 如果抛出异常 则调用 Log.i 记录
-     * @param msg 消息
-     * @param then 发生异常时执行的函数
+     * Hàm mở rộng để sử dụng với runCatching
+     * Nếu có ngoại lệ xảy ra, gọi Log.i để ghi lại
+     * @param msg Thông báo
+     * @param then Hàm được thực thi khi có ngoại lệ
      * @see runCatching
      * @see i
      */
@@ -330,10 +330,10 @@ object Log {
         }
 
     /**
-     * 扩展函数 配合runCatching使用
-     * 如果抛出异常 则调用 Log.ix 记录
-     * @param msg 消息
-     * @param then 发生异常时执行的函数
+     * Hàm mở rộng để sử dụng với runCatching
+     * Nếu có ngoại lệ xảy ra, gọi Log.ix để ghi lại
+     * @param msg Thông báo
+     * @param then Hàm được thực thi khi có ngoại lệ
      * @see runCatching
      * @see ix
      */
@@ -344,10 +344,10 @@ object Log {
         }
 
     /**
-     * 扩展函数 配合 runCatching 使用
-     * 如果抛出异常 则调用 Log.d 记录
-     * @param msg 消息
-     * @param then 发生异常时执行的函数
+     * Hàm mở rộng để sử dụng với runCatching
+     * Nếu có ngoại lệ xảy ra, gọi Log.d để ghi lại
+     * @param msg Thông báo
+     * @param then Hàm được thực thi khi có ngoại lệ
      * @see runCatching
      * @see d
      */
@@ -358,10 +358,10 @@ object Log {
         }
 
     /**
-     * 扩展函数 配合 runCatching 使用
-     * 如果抛出异常 则调用 Log.dx 记录
-     * @param msg 消息
-     * @param then 发生异常时执行的函数
+     * Hàm mở rộng để sử dụng với runCatching
+     * Nếu có ngoại lệ xảy ra, gọi Log.dx để ghi lại
+     * @param msg Thông báo
+     * @param then Hàm được thực thi khi có ngoại lệ
      * @see runCatching
      * @see dx
      */
@@ -372,10 +372,10 @@ object Log {
         }
 
     /**
-     * 扩展函数 配合 runCatching 使用
-     * 如果抛出异常 则调用 Log.w 记录
-     * @param msg 消息
-     * @param then 发生异常时执行的函数
+     * Hàm mở rộng để sử dụng với runCatching
+     * Nếu có ngoại lệ xảy ra, gọi Log.w để ghi lại
+     * @param msg Thông báo
+     * @param then Hàm được thực thi khi có ngoại lệ
      * @see runCatching
      * @see w
      */
@@ -386,10 +386,10 @@ object Log {
         }
 
     /**
-     * 扩展函数 配合 runCatching 使用
-     * 如果抛出异常 则调用 Log.w 记录
-     * @param msg 消息
-     * @param then 发生异常时执行的函数
+     * Hàm mở rộng để sử dụng với runCatching
+     * Nếu có ngoại lệ xảy ra, gọi Log.wx để ghi lại
+     * @param msg Thông báo
+     * @param then Hàm được thực thi khi có ngoại lệ
      * @see runCatching
      * @see wx
      */
@@ -400,10 +400,10 @@ object Log {
         }
 
     /**
-     * 扩展函数 配合 runCatching 使用
-     * 如果抛出异常 则调用 Log.e 记录
-     * @param msg 消息
-     * @param then 发生异常时执行的函数
+     * Hàm mở rộng để sử dụng với runCatching
+     * Nếu có ngoại lệ xảy ra, gọi Log.e để ghi lại
+     * @param msg Thông báo
+     * @param then Hàm được thực thi khi có ngoại lệ
      * @see runCatching
      * @see e
      */
@@ -414,10 +414,10 @@ object Log {
         }
 
     /**
-     * 扩展函数 配合 runCatching 使用
-     * 如果抛出异常 则调用 Log.ex 记录
-     * @param msg 消息
-     * @param then 发生异常时执行的函数
+     * Hàm mở rộng để sử dụng với runCatching
+     * Nếu có ngoại lệ xảy ra, gọi Log.ex để ghi lại
+     * @param msg Thông báo
+     * @param then Hàm được thực thi khi có ngoại lệ
      * @see runCatching
      * @see ex
      */
