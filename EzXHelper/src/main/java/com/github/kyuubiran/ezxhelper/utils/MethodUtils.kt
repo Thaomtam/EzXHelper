@@ -296,10 +296,10 @@ fun Iterable<String>.loadAndFindAllMethods(
 typealias ConstructorCondition = Constructor<*>.() -> Boolean
 
 /**
- *  扩展函数 通过条件查找构造方法
- *  @param condition 构造方法的条件
- *  @return 符合条件的构造方法
- *  @throws NoSuchMethodException 未找到构造方法
+ * Hàm mở rộng để tìm constructor theo điều kiện
+ * @param condition Điều kiện của constructor
+ * @return Constructor thỏa mãn điều kiện
+ * @throws NoSuchMethodException Không tìm thấy constructor
  */
 fun Array<Constructor<*>>.findConstructor(condition: ConstructorCondition): Constructor<*> {
     return this.firstOrNull { it.condition() }?.apply { isAccessible = true }
@@ -312,9 +312,9 @@ fun Iterable<Constructor<*>>.findConstructor(condition: ConstructorCondition): C
 }
 
 /**
- *  扩展函数 通过条件查找构造方法
- *  @param condition 构造方法的条件
- *  @return 符合条件的构造方法 未找到时返回null
+ * Hàm mở rộng để tìm constructor theo điều kiện
+ * @param condition Điều kiện của constructor
+ * @return Constructor thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 fun Array<Constructor<*>>.findConstructorOrNull(condition: ConstructorCondition): Constructor<*>? {
     return this.firstOrNull { it.condition() }?.apply { isAccessible = true }
@@ -325,11 +325,11 @@ fun Iterable<Constructor<*>>.findConstructorOrNull(condition: ConstructorConditi
 }
 
 /**
- * 通过条件查找构造方法
- * @param clz 类
- * @param condition 条件
- * @return 符合条件的构造方法
- * @throws NoSuchMethodException 未找到构造方法
+ * Tìm constructor theo điều kiện
+ * @param clz Lớp
+ * @param condition Điều kiện
+ * @return Constructor thỏa mãn điều kiện
+ * @throws NoSuchMethodException Không tìm thấy constructor
  */
 fun findConstructor(
     clz: Class<*>,
@@ -339,10 +339,10 @@ fun findConstructor(
 }
 
 /**
- * 通过条件查找构造方法
- * @param clz 类
- * @param condition 条件
- * @return 符合条件的构造方法 未找到时返回null
+ * Tìm constructor theo điều kiện
+ * @param clz Lớp
+ * @param condition Điều kiện
+ * @return Constructor thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 fun findConstructorOrNull(
     clz: Class<*>,
@@ -352,12 +352,12 @@ fun findConstructorOrNull(
 }
 
 /**
- * 通过条件查找构造方法
- * @param clzName 类名
- * @param classLoader 类加载器
- * @param condition 条件
- * @return 符合条件的构造方法
- * @throws NoSuchMethodException 未找到构造方法
+ * Tìm constructor theo điều kiện
+ * @param clzName Lớp
+ * @param classLoader ClassLoader
+ * @param condition Điều kiện
+ * @return Constructor thỏa mãn điều kiện
+ * @throws NoSuchMethodException Không tìm thấy constructor
  */
 fun findConstructor(
     clzName: String,
@@ -368,11 +368,11 @@ fun findConstructor(
 }
 
 /**
- * 通过条件查找构造方法
- * @param clzName 类名
- * @param classLoader 类加载器
- * @param condition 条件
- * @return 符合条件的构造方法 未找到时返回null
+ * Tìm constructor theo điều kiện
+ * @param clzName Lớp
+ * @param classLoader ClassLoader
+ * @param condition Điều kiện
+ * @return Constructor thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 fun findConstructorOrNull(
     clzName: String,
@@ -383,11 +383,11 @@ fun findConstructorOrNull(
 }
 
 /**
- * 查找所有符合条件的构造方法
- * @param clzName 类名
- * @param classLoader 类加载器
- * @param condition 条件
- * @return 所有符合条件的构造方法
+ * Tìm tất cả constructor theo điều kiện
+ * @param clzName Lớp
+ * @param classLoader ClassLoader
+ * @param condition Điều kiện
+ * @return Tất cả constructor thỏa mãn điều kiện
  */
 fun findAllConstructors(
     clzName: String,
@@ -398,10 +398,10 @@ fun findAllConstructors(
 }
 
 /**
- * 查找所有符合条件的构造方法
- * @param clz 类
- * @param condition 条件
- * @return 所有符合条件的构造方法
+ * Tìm tất cả constructor theo điều kiện
+ * @param clz Lớp
+ * @param condition Điều kiện
+ * @return Tất cả constructor thỏa mãn điều kiện
  */
 fun findAllConstructors(
     clz: Class<*>,
@@ -411,9 +411,9 @@ fun findAllConstructors(
 }
 
 /**
- * 扩展函数 通过遍历方法数组 返回符合条件的方法数组
- * @param condition 条件
- * @return 符合条件的方法数组
+ * Hàm mở rộng để duyệt qua mảng phương thức và trả về mảng phương thức thỏa mãn điều kiện
+ * @param condition Điều kiện
+ * @return Mảng phương thức thỏa mãn điều kiện
  */
 fun Array<Method>.findAllMethods(condition: MethodCondition): Array<Method> {
     return this.filter { it.condition() }.onEach { it.isAccessible = true }.toTypedArray()
@@ -424,11 +424,11 @@ fun Iterable<Method>.findAllMethods(condition: MethodCondition): List<Method> {
 }
 
 /**
- * 通过条件获取方法数组
- * @param clz 类
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的方法数组
+ * Lấy mảng phương thức theo điều kiện
+ * @param clz Lớp
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Mảng phương thức thỏa mãn điều kiện
  */
 fun findAllMethods(
     clz: Class<*>,
@@ -447,12 +447,12 @@ fun findAllMethods(
 }
 
 /**
- * 通过条件获取方法数组
- * @param clzName 类名
- * @param classLoader 类加载器
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的方法数组
+ * Lấy mảng phương thức theo điều kiện
+ * @param clzName Tên lớp
+ * @param classLoader ClassLoader
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Mảng phương thức thỏa mãn điều kiện
  */
 fun findAllMethods(
     clzName: String,
@@ -464,11 +464,11 @@ fun findAllMethods(
 }
 
 /**
- * 扩展函数 调用对象中符合条件的方法
- * @param args 参数
- * @param condition 条件
- * @return 方法的返回值
- * @throws NoSuchMethodException 未找到方法
+ * Hàm mở rộng để gọi phương thức trong đối tượng thỏa mãn điều kiện
+ * @param args Tham số
+ * @param condition Điều kiện
+ * @return Giá trị trả về của phương thức
+ * @throws NoSuchMethodException Không tìm thấy phương thức
  */
 fun Any.invokeMethod(vararg args: Any?, condition: MethodCondition): Any? {
     this::class.java.declaredMethods.firstOrNull { it.condition() }
@@ -477,11 +477,11 @@ fun Any.invokeMethod(vararg args: Any?, condition: MethodCondition): Any? {
 }
 
 /**
- * 扩展函数 调用类中符合条件的静态方法
- * @param args 参数表
- * @param condition 条件
- * @return 方法的返回值
- * @throws NoSuchMethodException 未找到方法
+ * Hàm mở rộng để gọi phương thức tĩnh trong lớp thỏa mãn điều kiện
+ * @param args Danh sách tham số
+ * @param condition Điều kiện
+ * @return Giá trị trả về của phương thức
+ * @throws NoSuchMethodException Không tìm thấy phương thức
  */
 fun Class<*>.invokeStaticMethod(
     vararg args: Any?,
@@ -493,16 +493,16 @@ fun Class<*>.invokeStaticMethod(
 }
 
 /**
- * 扩展函数 调用对象的方法
+ * Hàm mở rộng để gọi phương thức của đối tượng
  *
- * @param methodName 方法名
- * @param args 形参表 可空
- * @param argTypes 形参类型 可空
- * @param returnType 返回值类型 为null时无视返回值类型
- * @return 函数调用后的返回值
- * @throws IllegalArgumentException 当方法名为空时
- * @throws IllegalArgumentException 当args的长度与argTypes的长度不符时
- * @throws IllegalArgumentException 当对象是一个Class时
+ * @param methodName Tên phương thức
+ * @param args Danh sách tham số, có thể null
+ * @param argTypes Kiểu tham số, có thể null
+ * @param returnType Kiểu trả về, có thể null
+ * @return Giá trị trả về của phương thức
+ * @throws IllegalArgumentException Khi tên phương thức rỗng
+ * @throws IllegalArgumentException Khi độ dài của args không khớp với độ dài của argTypes
+ * @throws IllegalArgumentException Khi đối tượng là một Class
  */
 fun Any.invokeMethod(
     methodName: String,
@@ -528,18 +528,18 @@ fun Any.invokeMethod(
 }
 
 /**
- * 扩展函数 调用对象的方法 并且将返回值转换为T?类型
+ * Hàm mở rộng để gọi phương thức của đối tượng và chuyển đổi giá trị trả về thành kiểu T?
  *
- * 注意: 请勿对类使用此函数
- * @param methodName 方法名
- * @param args 形参表 可空
- * @param argTypes 形参类型 可空
- * @param returnType 返回值类型 为null时无视返回值类型
- * @param T 转换的类型
- * @return 函数调用后的返回值
- * @throws IllegalArgumentException 当方法名为空时
- * @throws IllegalArgumentException 当args的长度与argTypes的长度不符时
- * @throws IllegalArgumentException 当对象是一个Class时
+ * Lưu ý: Không sử dụng hàm này với lớp
+ * @param methodName Tên phương thức
+ * @param args Danh sách tham số, có thể null
+ * @param argTypes Kiểu tham số, có thể null
+ * @param returnType Kiểu trả về, null nếu bỏ qua kiểu trả về
+ * @param T Kiểu chuyển đổi
+ * @return Giá trị trả về của phương thức
+ * @throws IllegalArgumentException Khi tên phương thức rỗng
+ * @throws IllegalArgumentException Khi độ dài của args không khớp với độ dài của argTypes
+ * @throws IllegalArgumentException Khi đối tượng là một Class
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.invokeMethodAs(
@@ -549,12 +549,11 @@ fun <T> Any.invokeMethodAs(
     returnType: Class<*>? = null
 ): T? = this.invokeMethod(methodName, args, argTypes, returnType) as T?
 
-
 /**
- * 扩展函数 调用对象与形参表最佳匹配的方法
- * @param methodName 方法名
- * @param args 形参
- * @return 函数调用时的返回值
+ * Hàm mở rộng để gọi phương thức phù hợp nhất với danh sách tham số của đối tượng
+ * @param methodName Tên phương thức
+ * @param args Tham số
+ * @return Giá trị trả về của phương thức
  */
 fun Any.invokeMethodAuto(
     methodName: String,
@@ -564,10 +563,10 @@ fun Any.invokeMethodAuto(
 }
 
 /**
- * 扩展函数 调用对象与形参表最佳匹配的方法 并将返回值转换为T?类型
- * @param methodName 方法名
- * @param args 形参
- * @return 函数调用时的返回值
+ * Hàm mở rộng để gọi phương thức phù hợp nhất với danh sách tham số của đối tượng và chuyển đổi giá trị trả về thành kiểu T?
+ * @param methodName Tên phương thức
+ * @param args Tham số
+ * @return Giá trị trả về của phương thức
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.invokeMethodAutoAs(
@@ -576,13 +575,13 @@ fun <T> Any.invokeMethodAutoAs(
 ): T? = XposedHelpers.callMethod(this, methodName, *args) as T?
 
 /**
- * 扩展函数 调用类的静态方法
- * @param methodName 方法名
- * @param args 形参表 可空
- * @param argTypes 形参类型 可空
- * @param returnType 返回值类型 为null时无视返回值类型
- * @return 函数调用后的返回值
- * @throws IllegalArgumentException 当args的长度与argTypes的长度不符时
+ * Hàm mở rộng để gọi phương thức tĩnh của lớp
+ * @param methodName Tên phương thức
+ * @param args Danh sách tham số
+ * @param argTypes Kiểu tham số
+ * @param returnType Kiểu trả về
+ * @return Giá trị trả về của phương thức
+ * @throws IllegalArgumentException Khi độ dài của args không khớp với độ dài của argTypes
  */
 fun Class<*>.invokeStaticMethod(
     methodName: String,
@@ -607,13 +606,13 @@ fun Class<*>.invokeStaticMethod(
 }
 
 /**
- * 扩展函数 调用类的静态方法 并且将返回值转换为T?类型
- * @param methodName 方法名
- * @param args 形参表 可空
- * @param argTypes 形参类型 可空
- * @param returnType 返回值类型 为null时无视返回值类型
- * @return 函数调用后的返回值
- * @throws IllegalArgumentException 当args的长度与argTypes的长度不符时
+ * Hàm mở rộng để gọi phương thức tĩnh của lớp và chuyển đổi giá trị trả về thành kiểu T?
+ * @param methodName Tên phương thức
+ * @param args Danh sách tham số
+ * @param argTypes Kiểu tham số
+ * @param returnType Kiểu trả về
+ * @return Giá trị trả về của phương thức
+ * @throws IllegalArgumentException Khi độ dài của args không khớp với độ dài của argTypes
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Class<*>.invokeStaticMethodAs(
@@ -624,10 +623,10 @@ fun <T> Class<*>.invokeStaticMethodAs(
 ): T? = this.invokeStaticMethod(methodName, args, argTypes, returnType) as T?
 
 /**
- * 扩展函数 调用类中与形参表最佳匹配的静态方法
- * @param methodName 方法名
- * @param args 形参
- * @return 函数调用时的返回值
+ * Hàm mở rộng để gọi phương thức tĩnh của lớp
+ * @param methodName Tên phương thức
+ * @param args Danh sách tham số
+ * @return Giá trị trả về của phương thức
  */
 fun Class<*>.invokeStaticMethodAuto(
     methodName: String,
@@ -635,10 +634,10 @@ fun Class<*>.invokeStaticMethodAuto(
 ): Any? = XposedHelpers.callStaticMethod(this, methodName, *args)
 
 /**
- * 扩展函数 调用类中与形参表最佳匹配的静态方法 并将返回值转换为T?类型
- * @param methodName 方法名
- * @param args 形参
- * @return 函数调用时的返回值
+ * Hàm mở rộng để gọi phương thức tĩnh của lớp và chuyển đổi giá trị trả về thành kiểu T?
+ * @param methodName Tên phương thức
+ * @param args Danh sách tham số
+ * @return Giá trị trả về của phương thức
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Class<*>.invokeStaticMethodAutoAs(
@@ -647,11 +646,11 @@ fun <T> Class<*>.invokeStaticMethodAutoAs(
 ): T? = XposedHelpers.callStaticMethod(this, methodName, *args) as T?
 
 /**
- * 扩展函数 创建新的实例化对象
- * @param args 构造函数的形参表
- * @param argTypes 构造函数的形参类型
- * @return 成功时返回实例化的对象 失败时返回null
- * @throws IllegalArgumentException 当args的长度与argTypes的长度不符时
+ * Hàm mở rộng để tạo mới một đối tượng đã khởi tạo
+ * @param args Danh sách tham số của constructor
+ * @param argTypes Kiểu tham số của constructor
+ * @return Trả về đối tượng đã khởi tạo thành công, trả về null nếu không thành công
+ * @throws IllegalArgumentException Khi độ dài của args không khớp với độ dài của argTypes
  */
 fun Class<*>.newInstance(
     args: Args = args(),
@@ -674,11 +673,11 @@ fun Class<*>.newInstance(
 }
 
 /**
- * 扩展函数 创建新的实例化对象 并将对象转换为T?类型
- * @param args 构造函数的形参表
- * @param argTypes 构造函数的形参类型
- * @return 成功时返回实例化的对象 失败时返回null
- * @throws IllegalArgumentException 当args的长度与argTypes的长度不符时
+ * Hàm mở rộng để tạo mới một đối tượng đã khởi tạo và chuyển đổi đối tượng thành kiểu T?
+ * @param args Danh sách tham số của constructor
+ * @param argTypes Kiểu tham số của constructor
+ * @return Trả về đối tượng đã khởi tạo thành công, trả về null nếu không thành công
+ * @throws IllegalArgumentException Khi độ dài của args không khớp với độ dài của argTypes
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Class<*>.newInstanceAs(
@@ -687,9 +686,9 @@ fun <T> Class<*>.newInstanceAs(
 ): T? = this.newInstance(args, argTypes) as T?
 
 /**
- * 扩展函数 调用方法 并将返回值转换为T?类型
- * @param obj 被调用对象
- * @param args 形参表
+ * Hàm mở rộng để gọi phương thức và chuyển đổi giá trị trả về thành kiểu T?
+ * @param obj Đối tượng được gọi
+ * @param args Danh sách tham số
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Method.invokeAs(obj: Any?, vararg args: Any?): T? = this.run {
@@ -698,11 +697,11 @@ fun <T> Method.invokeAs(obj: Any?, vararg args: Any?): T? = this.run {
 }
 
 /**
- * 通过Descriptor获取方法
+ * Lấy phương thức thông qua Descriptor
  * @param desc Descriptor
- * @param clzLoader 类加载器
- * @return 找到的方法
- * @throws NoSuchMethodException 未找到方法
+ * @param clzLoader ClassLoader
+ * @return Phương thức tìm thấy
+ * @throws NoSuchMethodException Không tìm thấy phương thức
  */
 fun getMethodByDesc(
     desc: String,
@@ -710,10 +709,10 @@ fun getMethodByDesc(
 ): Method = DexDescriptor.newMethodDesc(desc).getMethod(clzLoader).apply { isAccessible = true }
 
 /**
- * 通过Descriptor获取方法
+ * Lấy phương thức thông qua Descriptor
  * @param desc Descriptor
- * @param clzLoader 类加载器
- * @return 找到的方法 未找到则返回null
+ * @param clzLoader ClassLoader
+ * @return Phương thức tìm thấy, trả về null nếu không tìm thấy
  */
 fun getMethodByDescOrNull(
     desc: String,
@@ -722,16 +721,16 @@ fun getMethodByDescOrNull(
 
 
 /**
- * 扩展函数 通过Descriptor获取方法
+ * Hàm mở rộng để lấy phương thức thông qua Descriptor
  * @param desc Descriptor
- * @return 找到的方法
- * @throws NoSuchMethodException 未找到方法
+ * @return Phương thức tìm thấy
+ * @throws NoSuchMethodException Không tìm thấy phương thức
  */
 fun ClassLoader.getMethodByDesc(desc: String): Method = getMethodByDesc(desc, this)
 
 /**
- * 扩展函数 通过Descriptor获取方法
+ * Hàm mở rộng để lấy phương thức thông qua Descriptor
  * @param desc Descriptor
- * @return 找到的方法 未找到则返回null
+ * @return Phương thức tìm thấy, trả về null nếu không tìm thấy
  */
 fun ClassLoader.getMethodByDescOrNull(desc: String): Method? = getMethodByDescOrNull(desc, this)

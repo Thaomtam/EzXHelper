@@ -48,13 +48,13 @@ fun findFieldOrNull(
 }
 
 /**
- * 通过条件查找类中的属性
- * @param clzName 类名
- * @param classLoader 类加载器
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的属性
- * @throws NoSuchFieldException 未找到属性
+ * Tìm thuộc tính trong lớp theo điều kiện
+ * @param clzName Tên lớp
+ * @param classLoader ClassLoader
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Thuộc tính thỏa mãn điều kiện
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính
  */
 fun findField(
     clzName: String,
@@ -66,11 +66,11 @@ fun findField(
 }
 
 /**
- * 通过条件查找类中的属性
- * @param clzName 类名
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的属性 未找到时返回null
+ * Tìm thuộc tính trong lớp theo điều kiện
+ * @param clzName Tên lớp
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Thuộc tính thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 fun findFieldOrNull(
     clzName: String,
@@ -82,10 +82,9 @@ fun findFieldOrNull(
 }
 
 /**
- * 扩展函数 通过条件查找属性
- * @param condition 条件
- * @return 符合条件的属性
- * @throws NoSuchFieldException 未找到属性
+ * Hàm mở rộng để tìm thuộc tính theo điều kiện
+ * @param condition Điều kiện
+ * @return Thuộc tính thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 fun Array<Field>.findField(condition: FieldCondition): Field {
     return this.firstOrNull { it.condition() }?.apply { isAccessible = true }
@@ -98,9 +97,9 @@ fun Iterable<Field>.findField(condition: FieldCondition): Field {
 }
 
 /**
- * 扩展函数 通过条件查找属性
- * @param condition 条件
- * @return 符合条件的属性 未找到时返回null
+ * Hàm mở rộng để tìm thuộc tính theo điều kiện
+ * @param condition Điều kiện
+ * @return Thuộc tính thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 fun Array<Field>.findFieldOrNull(condition: FieldCondition): Field? =
     this.firstOrNull { it.condition() }?.apply { isAccessible = true }
@@ -109,11 +108,86 @@ fun Array<Field>.findFieldOrNull(condition: FieldCondition): Field? =
 fun Iterable<Field>.findFieldOrNull(condition: FieldCondition): Field? =
     this.firstOrNull { it.condition() }?.apply { isAccessible = true }
 
+/**
+ * Hàm mở rộng để tìm thuộc tính thỏa mãn điều kiện và lấy giá trị của nó
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Đối tượng thuộc tính thỏa mãn điều kiện
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính phù hợp
+ */
+fun Any.findFieldObject(findSuper: Boolean = false, condition: FieldCondition): Any =
+    this.javaClass.findField(findSuper, condition).get(this)!!
 
 /**
- * 扩展函数 通过遍历属性数组 返回符合条件的属性数组
- * @param condition 条件
- * @return 符合条件的属性数组
+ * Hàm mở rộng để tìm thuộc tính thỏa mãn điều kiện và lấy giá trị của nó, chuyển đổi thành kiểu T
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Đối tượng thuộc tính thỏa mãn điều kiện
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính phù hợp
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T> Any.findFieldObjectAs(findSuper: Boolean = false, condition: FieldCondition): T =
+    this.javaClass.findField(findSuper, condition).get(this) as T
+
+/**
+ * Hàm mở rộng để tìm thuộc tính thỏa mãn điều kiện và lấy giá trị của nó
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Đối tượng thuộc tính thỏa mãn điều kiện, trả về null nếu không tìm thấy
+ */
+fun Any.findFieldObjectOrNull(findSuper: Boolean = false, condition: FieldCondition): Any? =
+    this.javaClass.findFieldOrNull(findSuper, condition)?.get(this)
+
+/**
+ * Hàm mở rộng để tìm thuộc tính thỏa mãn điều kiện và lấy giá trị của nó, chuyển đổi thành kiểu T?
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Đối tượng thuộc tính thỏa mãn điều kiện, trả về null nếu không tìm thấy
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T> Any.findFieldObjectOrNullAs(findSuper: Boolean = false, condition: FieldCondition): T? =
+    this.javaClass.findFieldOrNull(findSuper, condition)?.get(this) as T?
+
+/**
+ * Lấy thuộc tính thông qua Descriptor
+ * @param desc Descriptor
+ * @param clzLoader ClassLoader
+ * @return Thuộc tính đã tìm thấy
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính
+ */
+fun getFieldByDesc(desc: String, clzLoader: ClassLoader = InitFields.ezXClassLoader): Field =
+    DexDescriptor.newFieldDesc(desc).getField(clzLoader).apply { isAccessible = true }
+
+/**
+ * Hàm mở rộng để lấy thuộc tính thông qua Descriptor
+ * @param desc Descriptor
+ * @return Thuộc tính đã tìm thấy
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính
+ */
+fun ClassLoader.getFieldByDesc(desc: String): Field = getFieldByDesc(desc, this)
+
+/**
+ * Lấy thuộc tính thông qua Descriptor
+ * @param desc Descriptor
+ * @param clzLoader ClassLoader
+ * @return Thuộc tính đã tìm thấy, trả về null nếu không tìm thấy
+ */
+fun getFieldByDescOrNull(
+    desc: String,
+    clzLoader: ClassLoader = InitFields.ezXClassLoader
+): Field? = runCatching { getFieldByDesc(desc, clzLoader) }.getOrNull()
+
+/**
+ * Hàm mở rộng để lấy thuộc tính thông qua Descriptor
+ * @param desc Descriptor
+ * @return Thuộc tính đã tìm thấy, trả về null nếu không tìm thấy
+ */
+fun ClassLoader.getFieldByDescOrNull(desc: String): Field? = getFieldByDescOrNull(desc, this)
+
+/**
+ * Hàm mở rộng để duyệt qua mảng thuộc tính, trả về mảng các thuộc tính thỏa mãn điều kiện
+ * @param condition Điều kiện
+ * @return Mảng các thuộc tính thỏa mãn điều kiện
  */
 fun Array<Field>.findAllFields(condition: FieldCondition): Array<Field> =
     this.filter { it.condition() }.onEach { it.isAccessible = true }.toTypedArray()
@@ -124,11 +198,11 @@ fun Iterable<Field>.findAllFields(condition: FieldCondition): List<Field> =
 
 
 /**
- * 通过条件获取属性数组
- * @param clz 类
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的属性数组
+ * Lấy mảng thuộc tính theo điều kiện
+ * @param clz Lớp
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Mảng các thuộc tính thỏa mãn điều kiện
  */
 fun findAllFields(
     clz: Class<*>,
@@ -147,12 +221,12 @@ fun findAllFields(
 }
 
 /**
- * 通过条件获取属性数组
- * @param clzName 类名
- * @param classLoader 类加载器
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的属性数组
+ * Lấy mảng thuộc tính theo điều kiện
+ * @param clzName Tên lớp
+ * @param classLoader ClassLoader
+ * @param findSuper Có tìm trong lớp cha không
+ * @param condition Điều kiện
+ * @return Mảng các thuộc tính thỏa mãn điều kiện
  */
 fun findAllFields(
     clzName: String,
@@ -162,13 +236,13 @@ fun findAllFields(
 ): List<Field> = findAllFields(loadClass(clzName, classLoader), findSuper, condition)
 
 /**
- * 扩展函数 通过类或者对象获取单个属性
- * @param fieldName 属性名
- * @param isStatic 是否静态类型
- * @param fieldType 属性类型
- * @return 符合条件的属性
- * @throws IllegalArgumentException 属性名为空
- * @throws NoSuchFieldException 未找到属性
+ * Hàm mở rộng để lấy một thuộc tính từ lớp hoặc đối tượng
+ * @param fieldName Tên thuộc tính
+ * @param isStatic Có phải là thuộc tính tĩnh không
+ * @param fieldType Kiểu dữ liệu của thuộc tính
+ * @return Thuộc tính thỏa mãn điều kiện
+ * @throws IllegalArgumentException Tên thuộc tính trống
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính
  */
 fun Any.field(
     fieldName: String,
@@ -187,11 +261,11 @@ fun Any.field(
 }
 
 /**
- * 扩展函数 通过类型获取属性
- * @param type 类型
- * @param isStatic 是否静态
- * @return 符合条件的属性
- * @throws NoSuchFieldException 未找到属性
+ * Hàm mở rộng để lấy thuộc tính theo kiểu dữ liệu
+ * @param type Kiểu dữ liệu
+ * @param isStatic Có phải là thuộc tính tĩnh không
+ * @return Thuộc tính thỏa mãn điều kiện
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính
  */
 fun Any.getFieldByType(type: Class<*>, isStatic: Boolean = false): Field {
     var c: Class<*> = if (this is Class<*>) this else this.javaClass
@@ -207,12 +281,12 @@ fun Any.getFieldByType(type: Class<*>, isStatic: Boolean = false): Field {
 fun Any.getStaticFieldByType(type: Class<*>): Field = this.getFieldByType(type, true)
 
 /**
- * 扩展函数 通过类获取静态属性
- * @param fieldName 属性名称
- * @param type 属性类型
- * @return 符合条件的属性
- * @throws IllegalArgumentException 属性名为空
- * @throws NoSuchFieldException 未找到属性
+ * Hàm mở rộng để lấy thuộc tính tĩnh từ lớp
+ * @param fieldName Tên thuộc tính
+ * @param type Kiểu dữ liệu của thuộc tính
+ * @return Thuộc tính thỏa mãn điều kiện
+ * @throws IllegalArgumentException Tên thuộc tính trống
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính
  */
 fun Class<*>.staticField(fieldName: String, type: Class<*>? = null): Field {
     if (fieldName.isBlank()) throw IllegalArgumentException("Field name must not be empty!")
@@ -220,8 +294,8 @@ fun Class<*>.staticField(fieldName: String, type: Class<*>? = null): Field {
 }
 
 /**
- * 扩展函数 获取静态对象 并转换为T?类型
- * @return 成功时返回获取到的对象 失败时返回null
+ * Hàm mở rộng để lấy đối tượng tĩnh và chuyển đổi thành kiểu T?
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Field.getStaticAs(): T? = this.run {
@@ -230,9 +304,9 @@ fun <T> Field.getStaticAs(): T? = this.run {
 }
 
 /**
- * 扩展函数 获取非空对象
- * @param obj 对象
- * @return 成功时返回获取到的对象 失败时抛出异常
+ * Hàm mở rộng để lấy đối tượng không null
+ * @param obj Đối tượng
+ * @return Trả về đối tượng đã lấy nếu thành công, ném ngoại lệ nếu thất bại
  */
 fun Field.getNonNull(obj: Any?): Any = this.run {
     isAccessible = true
@@ -240,9 +314,9 @@ fun Field.getNonNull(obj: Any?): Any = this.run {
 }
 
 /**
- * 扩展函数 获取非空对象 并转换为T类型
- * @param obj 对象
- * @return 成功时返回获取到的对象 失败时抛出异常
+ * Hàm mở rộng để lấy đối tượng không null và chuyển đổi thành kiểu T
+ * @param obj Đối tượng
+ * @return Trả về đối tượng đã lấy nếu thành công, ném ngoại lệ nếu thất bại
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Field.getNonNullAs(obj: Any?): T = this.run {
@@ -251,8 +325,8 @@ fun <T> Field.getNonNullAs(obj: Any?): T = this.run {
 }
 
 /**
- * 扩展函数 获取静态非空对象
- * @return 成功时返回获取到的对象 失败时抛出异常
+ * Hàm mở rộng để lấy đối tượng tĩnh không null
+ * @return Trả về đối tượng đã lấy nếu thành công, ném ngoại lệ nếu thất bại
  */
 fun Field.getStaticNonNull(): Any = this.run {
     isAccessible = true
@@ -260,8 +334,8 @@ fun Field.getStaticNonNull(): Any = this.run {
 }
 
 /**
- * 扩展函数 获取静态非空对象 并转换为T类型
- * @return 成功时返回获取到的对象 失败时抛出异常
+ * Hàm mở rộng để lấy đối tượng tĩnh không null và chuyển đổi thành kiểu T
+ * @return Trả về đối tượng đã lấy nếu thành công, ném ngoại lệ nếu thất bại
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Field.getStaticNonNullAs(): T = this.run {
@@ -270,9 +344,9 @@ fun <T> Field.getStaticNonNullAs(): T = this.run {
 }
 
 /**
- * 扩展函数 获取对象 并转换为T?类型
- * @param obj 对象
- * @return 成功时返回获取到的对象 失败时返回null
+ * Hàm mở rộng để lấy đối tượng và chuyển đổi thành kiểu T?
+ * @param obj Đối tượng
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Field.getAs(obj: Any?): T? = this.run {
@@ -281,8 +355,8 @@ fun <T> Field.getAs(obj: Any?): T? = this.run {
 }
 
 /**
- * 扩展函数 获取静态对象
- * @return 成功时返回获取到的对象 失败时返回null
+ * Hàm mở rộng để lấy đối tượng tĩnh
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
  */
 fun Field.getStatic(): Any? = this.run {
     isAccessible = true
@@ -290,10 +364,10 @@ fun Field.getStatic(): Any? = this.run {
 }
 
 /**
- * 深拷贝一个对象
- * @param srcObj 源对象
- * @param newObj 新对象
- * @return 成功返回拷贝后的对象 失败返回null
+ * Sao chép sâu một đối tượng
+ * @param srcObj Đối tượng nguồn
+ * @param newObj Đối tượng mới
+ * @return Trả về đối tượng đã sao chép nếu thành công, null nếu thất bại
  */
 fun <T> fieldCpy(srcObj: T, newObj: T): T? = tryOrLogNull {
     var clz: Class<*> = srcObj!!::class.java
@@ -312,11 +386,11 @@ fun <T> fieldCpy(srcObj: T, newObj: T): T? = tryOrLogNull {
 typealias ObjectCondition = Any?.() -> Boolean
 
 /**
- * 强烈不推荐!!非常慢!!
+ * Không khuyến khích sử dụng!! Rất chậm!!
  *
- * 扩展函数 遍历对象中的属性并返回符合条件的对象
- * @param condition 条件
- * @return 成功时返回找到的对象 失败时返回null
+ * Hàm mở rộng để duyệt qua các thuộc tính của đối tượng và trả về đối tượng thỏa mãn điều kiện
+ * @param condition Điều kiện
+ * @return Trả về đối tượng tìm thấy nếu thành công, null nếu thất bại
  */
 fun Any.findObject(condition: ObjectCondition): Any? =
     this.javaClass.declaredFields.firstNotNullOfOrNull {
@@ -325,12 +399,12 @@ fun Any.findObject(condition: ObjectCondition): Any? =
     }
 
 /**
- * 强烈不推荐!!非常慢!!
+ * Không khuyến khích sử dụng!! Rất chậm!!
  *
- * 扩展函数 遍历对象中的属性并返回符合条件的对象
- * @param fieldCond 属性条件
- * @param objCond 对象条件
- * @return 成功时返回找到的对象 失败时返回null
+ * Hàm mở rộng để duyệt qua các thuộc tính của đối tượng và trả về đối tượng thỏa mãn điều kiện
+ * @param fieldCond Điều kiện thuộc tính
+ * @param objCond Điều kiện đối tượng
+ * @return Trả về đối tượng tìm thấy nếu thành công, null nếu thất bại
  */
 fun Any.findObject(
     fieldCond: FieldCondition,
@@ -342,54 +416,24 @@ fun Any.findObject(
 }
 
 /**
- * 强烈不推荐!!非常慢!!
- *
- * 扩展函数 遍历类中的静态属性并返回符合条件的静态对象
- * @param condition 条件
- * @return 成功时返回找到的静态对象 失败时返回null
- */
-fun Class<*>.findStaticObject(condition: ObjectCondition): Any? =
-    this.declaredFields.firstNotNullOfOrNull {
-        it.isAccessible = true
-        it.get(null)?.let(condition) ?: false
-    }
-
-/**
- * 强烈不推荐!!非常慢!!
- *
- * 扩展函数 遍历类中的静态属性并返回符合条件的静态对象
- * @param fieldCond 属性条件
- * @param objCond 对象条件
- * @return 成功时返回找到的静态对象 失败时返回null
- */
-fun Any.findStaticObject(
-    fieldCond: FieldCondition,
-    objCond: ObjectCondition
-): Any? = this.javaClass.declaredFields.firstNotNullOfOrNull f@{
-    if (!it.fieldCond()) return@f false
-    it.isAccessible = true
-    it.get(null)?.let(objCond) ?: false
-}
-
-/**
- * 扩展函数 获取实例化对象中的对象
- * @param objName 对象名称
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时返回null
- * @throws IllegalArgumentException 目标对象名为空
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param objName Tên đối tượng
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
+ * @throws IllegalArgumentException Tên đối tượng đích trống
  */
 fun Any.getObjectOrNull(objName: String, type: Class<*>? = null): Any? {
-    if (objName.isBlank()) throw java.lang.IllegalArgumentException("Object name must not be empty!")
+    if (objName.isBlank()) throw IllegalArgumentException("Object name must not be empty!")
     return tryOrLogNull { this.field(objName, fieldType = type).get(this) }
 }
 
 /**
- * 扩展函数 获取实例化对象中的对象
- * @param objName 对象名称
- * @param type 类型
- * @param T 转换的类型
- * @return 成功时返回获取到的对象 失败时返回null
- * @throws IllegalArgumentException 目标对象名为空
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param objName Tên đối tượng
+ * @param type Kiểu dữ liệu
+ * @param T Kiểu dữ liệu chuyển đổi
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
+ * @throws IllegalArgumentException Tên đối tượng đích trống
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.getObjectOrNullAs(objName: String, type: Class<*>? = null): T? {
@@ -397,11 +441,11 @@ fun <T> Any.getObjectOrNullAs(objName: String, type: Class<*>? = null): T? {
 }
 
 /**
- * 扩展函数 获取实例化对象中的对象
- * @param objName 对象名称
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时抛出异常
- * @throws IllegalArgumentException 目标对象名为空
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param objName Tên đối tượng
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
+ * @throws IllegalArgumentException Tên đối tượng đích trống
  */
 fun Any.getObject(objName: String, type: Class<*>? = null): Any {
     if (objName.isBlank()) throw IllegalArgumentException("Object name must not be empty!")
@@ -409,12 +453,12 @@ fun Any.getObject(objName: String, type: Class<*>? = null): Any {
 }
 
 /**
- * 扩展函数 获取实例化对象中的对象 并转化为类型T
- *
- * @param objName 对象名称
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时抛出异常
- * @throws IllegalArgumentException 目标对象名为空
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param objName Tên đối tượng
+ * @param type Kiểu dữ liệu
+ * @param T Kiểu dữ liệu chuyển đổi
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
+ * @throws IllegalArgumentException Tên đối tượng đích trống
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.getObjectAs(objName: String, type: Class<*>? = null): T =
@@ -424,76 +468,44 @@ fun <T> Any.getObjectAs(objName: String, type: Class<*>? = null): T =
 fun <T> Any.getObjectAs(field: Field): T = field.get(this) as T
 
 /**
- * 扩展函数 获取实例化对象中的对象
- * @param field 属性
- * @return 成功时返回获取到的对象 失败时返回null
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param field Thuộc tính
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
  */
 fun Any.getObjectOrNull(field: Field): Any? = tryOrLogNull { field.let { it.isAccessible;it.get(this) } }
 
 /**
- * 扩展函数 获取实例化对象中的对象 并且转换为T?类型
- *
- * 注意: 请勿对Class使用此函数
- * @param field 属性
- * @param T 转换的类型
- * @return 成功时返回获取到的对象 失败时返回null
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param field Thuộc tính
+ * @param T Kiểu dữ liệu chuyển đổi
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.getObjectOrNullAs(field: Field): T? = this.getObjectOrNull(field) as T?
 
 /**
- * 扩展函数 通过类型 获取实例化对象中的对象
- *
- * 不推荐使用 此函数只会返回第一次匹配到的对象
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时返回null
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
  */
 fun Any.getObjectOrNullByType(type: Class<*>): Any? = tryOrLogNull {
     this.getFieldByType(type).get(this)
 }
 
 /**
- * 扩展函数 通过类型 获取实例化对象中的对象 并转换为T?类型
- *
- * 不推荐使用 此函数只会返回第一次匹配到的对象
- *
- * 注意: 请勿对Class使用此函数
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时返回null
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.getObjectOrNullByTypeAs(type: Class<*>): T? = this.getObjectOrNullByType(type) as T?
 
 /**
- * 扩展函数 通过类型 获取实例化对象中的对象
- *
- * 不推荐使用 此函数只会返回第一次匹配到的对象
- *
- * 注意: 请勿对Class使用此函数
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时抛出异常
- */
-fun Any.getObjectByType(type: Class<*>): Any = this.getFieldByType(type).get(this)!!
-
-/**
- * 扩展函数 通过类型 获取实例化对象中的对象 并转换为T类型
- *
- * 不推荐使用 此函数只会返回第一次匹配到的对象
- *
- * 注意: 请勿对Class使用此函数
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时抛出异常
- */
-@Suppress("UNCHECKED_CAST")
-fun <T> Any.getObjectByTypeAs(type: Class<*>): T = this.getObjectByType(type) as T
-
-
-/**
- * 扩展函数 获取类中的静态对象
- * @param objName 需要获取的对象名
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时返回null
- * @throws IllegalArgumentException 当名字为空时
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param objName Tên đối tượng cần lấy
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
+ * @throws IllegalArgumentException Khi tên đối tượng trống
  */
 fun Class<*>.getStaticObjectOrNull(
     objName: String,
@@ -504,12 +516,12 @@ fun Class<*>.getStaticObjectOrNull(
 }
 
 /**
- * 扩展函数 获取类中的静态对象 并且转换为T?类型
- * @param objName 需要获取的对象名
- * @param type 类型
- * @param T 转换的类型
- * @return 成功时返回获取到的对象 失败时返回null
- * @throws IllegalArgumentException 当名字为空时
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param objName Tên đối tượng cần lấy
+ * @param type Kiểu dữ liệu
+ * @param T Kiểu dữ liệu chuyển đổi
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
+ * @throws IllegalArgumentException Khi tên đối tượng trống
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Class<*>.getStaticObjectOrNullAs(
@@ -518,12 +530,11 @@ fun <T> Class<*>.getStaticObjectOrNullAs(
 ): T? = this.getStaticObjectOrNull(objName, type) as T?
 
 /**
- * 扩展函数 获取类中的静态对象
- * @param objName 需要获取的对象名
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时抛出异常
- * @throws IllegalArgumentException 当名字为空时
- * @throws NoSuchFieldException 未找到属性
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param objName Tên đối tượng cần lấy
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
+ * @throws IllegalArgumentException Khi tên đối tượng trống
  */
 fun Class<*>.getStaticObject(
     objName: String,
@@ -534,11 +545,11 @@ fun Class<*>.getStaticObject(
 }
 
 /**
- * 扩展函数 获取类中的静态对象 并转换为T类型
- * @param objName 需要获取的对象名
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时抛出异常
- * @throws IllegalArgumentException 当名字为空时
+ * Hàm mở rộng để lấy đối tượng tĩnh từ lớp và chuyển đổi thành kiểu T
+ * @param objName Tên đối tượng cần lấy
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, ném ngoại lệ nếu thất bại
+ * @throws IllegalArgumentException Khi tên đối tượng trống
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Class<*>.getStaticObjectAs(
@@ -547,9 +558,9 @@ fun <T> Class<*>.getStaticObjectAs(
 ): T = this.getStaticObject(objName, type) as T
 
 /**
- * 获取Field中的对象
- * @param field 属性
- * @return 返回获取到的对象(Nullable)
+ * Lấy đối tượng từ Field
+ * @param field Thuộc tính
+ * @return Trả về đối tượng đã lấy (Có thể null)
  */
 fun getStaticObjectOrNull(field: Field): Any? = field.run {
     isAccessible = true
@@ -557,17 +568,17 @@ fun getStaticObjectOrNull(field: Field): Any? = field.run {
 }
 
 /**
- * 获取Field中的对象 并转换为T?类型
- * @param field 属性
- * @return 返回获取到的对象(Nullable)
+ * Lấy đối tượng từ Field và chuyển đổi thành kiểu T?
+ * @param field Thuộc tính
+ * @return Trả về đối tượng đã lấy (Có thể null)
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> getStaticObjectOrNullAs(field: Field): T? = getStaticObjectOrNull(field) as T?
 
 /**
- * 获取Field中的对象
- * @param field 属性
- * @return 成功时返回获取到的对象 失败时抛出异常
+ * Lấy đối tượng từ Field
+ * @param field Thuộc tính
+ * @return Trả về đối tượng đã lấy nếu thành công, ném ngoại lệ nếu thất bại
  */
 fun getStaticObject(field: Field): Any = field.run {
     isAccessible = true
@@ -575,60 +586,60 @@ fun getStaticObject(field: Field): Any = field.run {
 }
 
 /**
- * 获取Field中的对象 并转换为T类型
- * @param field 属性
- * @return 成功时返回获取到的对象 失败时抛出异常
+ * Lấy đối tượng từ Field và chuyển đổi thành kiểu T
+ * @param field Thuộc tính
+ * @return Trả về đối tượng đã lấy nếu thành công, ném ngoại lệ nếu thất bại
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> getStaticObjectAs(field: Field): T = getStaticObject(field) as T
 
 /**
- * 扩展函数 通过类型 获取类中的静态对象
+ * Hàm mở rộng để lấy đối tượng tĩnh từ lớp thông qua kiểu dữ liệu
  *
- * 不推荐使用 此函数只会返回第一次匹配到的对象
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时抛出异常
+ * Không khuyến khích sử dụng, hàm này chỉ trả về đối tượng đầu tiên phù hợp
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
  */
 fun Class<*>.getStaticObjectByType(type: Class<*>): Any = this.getStaticFieldByType(type).get(null)!!
 
 /**
- * 扩展函数 通过类型 获取类中的静态对象 并转换为T类型
+ * Hàm mở rộng để lấy đối tượng tĩnh từ lớp thông qua kiểu dữ liệu và chuyển đổi thành kiểu T
  *
- * 不推荐使用 此函数只会返回第一次匹配到的对象
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时抛出异常
+ * Không khuyến khích sử dụng, hàm này chỉ trả về đối tượng đầu tiên phù hợp
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, ném ngoại lệ nếu thất bại
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Class<*>.getStaticObjectByTypeAs(type: Class<*>): T = this.getStaticFieldByType(type).get(null) as T
 
 /**
- * 扩展函数 通过类型 获取类中的静态对象
+ * Hàm mở rộng để lấy đối tượng tĩnh từ lớp thông qua kiểu dữ liệu
  *
- * 不推荐使用 此函数只会返回第一次匹配到的对象
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时返回null
+ * Không khuyến khích sử dụng, hàm này chỉ trả về đối tượng đầu tiên phù hợp
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
  */
 fun Class<*>.getStaticObjectOrNullByType(type: Class<*>): Any? = tryOrLogNull {
     this.getStaticFieldByType(type).get(null)
 }
 
 /**
- * 扩展函数 通过类型 获取类中的静态对象 并转换为T？类型
+ * Hàm mở rộng để lấy đối tượng tĩnh từ lớp thông qua kiểu dữ liệu và chuyển đổi thành kiểu T?
  *
- * 不推荐使用 此函数只会返回第一次匹配到的对象
- * @param type 类型
- * @return 成功时返回获取到的对象 失败时返回null
+ * Không khuyến khích sử dụng, hàm này chỉ trả về đối tượng đầu tiên phù hợp
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Class<*>.getStaticObjectOrNullByTypeAs(type: Class<*>): T? = this.getStaticFieldByType(type) as T?
 
 /**
- * 扩展函数 设置对象中对象的值
+ * Hàm mở rộng để đặt giá trị cho thuộc tính của đối tượng
  *
- * @param objName 需要设置的对象名称
- * @param value 值
- * @param fieldType 对象类型
- * @throws IllegalArgumentException 对象名为空
+ * @param objName Tên thuộc tính cần đặt giá trị
+ * @param value Giá trị
+ * @param fieldType Kiểu dữ liệu của thuộc tính
+ * @throws IllegalArgumentException Tên thuộc tính trống
  */
 fun Any.putObject(objName: String, value: Any?, fieldType: Class<*>? = null) {
     if (objName.isBlank()) throw IllegalArgumentException("Object name must not be empty!")
@@ -636,9 +647,9 @@ fun Any.putObject(objName: String, value: Any?, fieldType: Class<*>? = null) {
 }
 
 /**
- * 扩展函数 设置对象中对象的值
- * @param field 属性
- * @param value 值
+ * Hàm mở rộng để đặt giá trị cho thuộc tính của đối tượng
+ * @param field Thuộc tính
+ * @param value Giá trị
  */
 fun Any.putObject(field: Field, value: Any?) = tryOrLog {
     field.let {
@@ -648,33 +659,33 @@ fun Any.putObject(field: Field, value: Any?) = tryOrLog {
 }
 
 /**
- * 扩展函数 通过类型设置值
+ * Hàm mở rộng để đặt giá trị cho thuộc tính của đối tượng thông qua kiểu dữ liệu
  *
- * 不推荐使用 只会设置第一个类型符合的对象的值
- * @param value 值
- * @param type 类型
+ * Không khuyến khích sử dụng, chỉ đặt giá trị cho thuộc tính đầu tiên có kiểu dữ liệu phù hợp
+ * @param value Giá trị
+ * @param type Kiểu dữ liệu
  */
 fun Any.putObjectByType(value: Any?, type: Class<*>) = tryOrLog {
     this.getFieldByType(type).set(this, value)
 }
 
 /**
- * 扩展函数 通过类型设置类中的静态对象的值
+ * Hàm mở rộng để đặt giá trị cho thuộc tính tĩnh của lớp thông qua kiểu dữ liệu
  *
- * 不推荐使用 只会设置第一个类型符合的对象的值
- * @param value 值
- * @param type 类型
+ * Không khuyến khích sử dụng, chỉ đặt giá trị cho thuộc tính đầu tiên có kiểu dữ liệu phù hợp
+ * @param value Giá trị
+ * @param type Kiểu dữ liệu
  */
 fun Class<*>.putStaticObjectByType(value: Any?, type: Class<*>) = tryOrLog {
     this.getStaticFieldByType(type).set(null, value)
 }
 
 /**
- * 扩展函数 设置类中静态对象值
- * @param objName 需要设置的对象名称
- * @param value 值
- * @param fieldType 对象类型
- * @throws IllegalArgumentException 对象名为空
+ * Hàm mở rộng để đặt giá trị cho thuộc tính tĩnh của lớp
+ * @param objName Tên thuộc tính cần đặt giá trị
+ * @param value Giá trị
+ * @param fieldType Kiểu dữ liệu của thuộc tính
+ * @throws IllegalArgumentException Tên thuộc tính trống
  */
 fun Class<*>.putStaticObject(objName: String, value: Any?, fieldType: Class<*>? = null) = tryOrLog {
     if (objName.isBlank()) throw IllegalArgumentException("Object name must not be empty!")
@@ -686,68 +697,68 @@ fun Class<*>.putStaticObject(objName: String, value: Any?, fieldType: Class<*>? 
 }
 
 /**
- * 扩展函数 查找符合条件的属性并获取对象
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的属性对象
- * @throws NoSuchFieldException 未找到符合的属性
+ * Hàm mở rộng để tìm thuộc tính thỏa mãn điều kiện và lấy đối tượng
+ * @param findSuper Có tìm kiếm trong lớp cha hay không
+ * @param condition Điều kiện
+ * @return Đối tượng của thuộc tính thỏa mãn điều kiện
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính phù hợp
  */
 fun Any.findFieldObject(findSuper: Boolean = false, condition: FieldCondition): Any =
     this.javaClass.findField(findSuper, condition).get(this)!!
 
 /**
- * 扩展函数 查找符合条件的属性并获取对象 并转化为T类型
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的属性对象
- * @throws NoSuchFieldException 未找到符合的属性
+ * Hàm mở rộng để tìm thuộc tính thỏa mãn điều kiện và lấy đối tượng, chuyển đổi thành kiểu T
+ * @param findSuper Có tìm kiếm trong lớp cha hay không
+ * @param condition Điều kiện
+ * @return Đối tượng của thuộc tính thỏa mãn điều kiện
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính phù hợp
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.findFieldObjectAs(findSuper: Boolean = false, condition: FieldCondition): T =
     this.javaClass.findField(findSuper, condition).get(this) as T
 
 /**
- * 扩展函数 查找符合条件的属性并获取对象
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的属性对象 未找到时返回null
+ * Hàm mở rộng để tìm thuộc tính thỏa mãn điều kiện và lấy đối tượng
+ * @param findSuper Có tìm kiếm trong lớp cha hay không
+ * @param condition Điều kiện
+ * @return Đối tượng của thuộc tính thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 fun Any.findFieldObjectOrNull(findSuper: Boolean = false, condition: FieldCondition): Any? =
     this.javaClass.findFieldOrNull(findSuper, condition)?.get(this)
 
 /**
- * 扩展函数 查找符合条件的属性并获取对象 并转化为T?类型
- * @param findSuper 是否查找父类
- * @param condition 条件
- * @return 符合条件的属性对象 未找到时返回null
+ * Hàm mở rộng để tìm thuộc tính thỏa mãn điều kiện và lấy đối tượng, chuyển đổi thành kiểu T?
+ * @param findSuper Có tìm kiếm trong lớp cha hay không
+ * @param condition Điều kiện
+ * @return Đối tượng của thuộc tính thỏa mãn điều kiện, trả về null nếu không tìm thấy
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Any.findFieldObjectOrNullAs(findSuper: Boolean = false, condition: FieldCondition): T? =
     this.javaClass.findFieldOrNull(findSuper, condition)?.get(this) as T?
 
 /**
- * 通过Descriptor获取属性
+ * Lấy thuộc tính thông qua Descriptor
  * @param desc Descriptor
- * @param clzLoader 类加载器
- * @return 找到的属性
- * @throws NoSuchFieldException 未找到属性
+ * @param clzLoader Bộ tải lớp
+ * @return Thuộc tính tìm thấy
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính
  */
 fun getFieldByDesc(desc: String, clzLoader: ClassLoader = InitFields.ezXClassLoader): Field =
     DexDescriptor.newFieldDesc(desc).getField(clzLoader).apply { isAccessible = true }
 
 /**
- * 扩展函数 通过Descriptor获取属性
+ * Hàm mở rộng để lấy thuộc tính thông qua Descriptor
  * @param desc Descriptor
- * @return 找到的属性
- * @throws NoSuchFieldException 未找到属性
+ * @return Thuộc tính tìm thấy
+ * @throws NoSuchFieldException Không tìm thấy thuộc tính
  */
 fun ClassLoader.getFieldByDesc(desc: String): Field = getFieldByDesc(desc, this)
 
 /**
- * 通过Descriptor获取属性
+ * Lấy thuộc tính thông qua Descriptor
  * @param desc Descriptor
- * @param clzLoader 类加载器
- * @return 找到的属性 未找到则返回null
+ * @param clzLoader Bộ tải lớp
+ * @return Thuộc tính tìm thấy, trả về null nếu không tìm thấy
  */
 fun getFieldByDescOrNull(
     desc: String,
@@ -755,8 +766,63 @@ fun getFieldByDescOrNull(
 ): Field? = runCatching { getFieldByDesc(desc, clzLoader) }.getOrNull()
 
 /**
- * 扩展函数 通过Descriptor获取属性
+ * Hàm mở rộng để lấy thuộc tính thông qua Descriptor
  * @param desc Descriptor
- * @return 找到的属性 未找到则返回null
+ * @return Thuộc tính tìm thấy, trả về null nếu không tìm thấy
  */
 fun ClassLoader.getFieldByDescOrNull(desc: String): Field? = getFieldByDescOrNull(desc, this)
+
+/**
+ * Không khuyến khích sử dụng!! Rất chậm!!
+ *
+ * Hàm mở rộng để duyệt qua các thuộc tính tĩnh của lớp và trả về đối tượng tĩnh thỏa mãn điều kiện
+ * @param condition Điều kiện
+ * @return Trả về đối tượng tĩnh tìm thấy nếu thành công, null nếu thất bại
+ */
+fun Class<*>.findStaticObject(condition: ObjectCondition): Any? =
+    this.declaredFields.firstNotNullOfOrNull {
+        it.isAccessible = true
+        it.get(null)?.let(condition) ?: false
+    }
+
+/**
+ * Không khuyến khích sử dụng!! Rất chậm!!
+ *
+ * Hàm mở rộng để duyệt qua các thuộc tính tĩnh của lớp và trả về đối tượng tĩnh thỏa mãn điều kiện
+ * @param fieldCond Điều kiện thuộc tính
+ * @param objCond Điều kiện đối tượng
+ * @return Trả về đối tượng tĩnh tìm thấy nếu thành công, null nếu thất bại
+ */
+fun Any.findStaticObject(
+    fieldCond: FieldCondition,
+    objCond: ObjectCondition
+): Any? = this.javaClass.declaredFields.firstNotNullOfOrNull f@{
+    if (!it.fieldCond()) return@f false
+    it.isAccessible = true
+    it.get(null)?.let(objCond) ?: false
+}
+
+/**
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param objName Tên đối tượng
+ * @param type Kiểu dữ liệu
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
+ * @throws IllegalArgumentException Tên đối tượng đích trống
+ */
+fun Any.getObject(objName: String, type: Class<*>? = null): Any? {
+    if (objName.isBlank()) throw IllegalArgumentException("Object name must not be empty!")
+    return this.field(objName, false, type).getAs(this)
+}
+
+/**
+ * Hàm mở rộng để lấy đối tượng từ đối tượng đã khởi tạo
+ * @param objName Tên đối tượng
+ * @param type Kiểu dữ liệu
+ * @param T Kiểu dữ liệu chuyển đổi
+ * @return Trả về đối tượng đã lấy nếu thành công, null nếu thất bại
+ * @throws IllegalArgumentException Tên đối tượng đích trống
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T> Any.getObjectOrNullAs(objName: String, type: Class<*>? = null): T? {
+    return this.getObjectOrNull(objName, type) as T?
+}
