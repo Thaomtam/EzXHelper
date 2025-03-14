@@ -51,6 +51,7 @@ jobs:
       - name: Build KDoc
         run: |
           cd ./EzXHelper
+          chmod +x gradlew
           ./gradlew :EzXHelper:dokkaHtml
 
       - name: Push to gh-pages
